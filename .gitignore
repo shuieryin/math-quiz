@@ -1,0 +1,10 @@
+dist
+.npmrc
+package-lock.json
+node_modules
+.idea
+coverage
+misc/
+.yarnrc
+*.log
+storybook-static/
