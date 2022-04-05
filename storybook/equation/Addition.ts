@@ -2,8 +2,8 @@ import { Equation, EquationResult } from "../lib/types";
 import { genSequence } from "./equationUtils";
 
 class Addition extends Equation {
-	minNum = 3;
-	step = 2;
+	minNum = 2;
+	step = 3;
 
 	constructor(maxNum: number, digitSize: number) {
 		super(maxNum, digitSize);
