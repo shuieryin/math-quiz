@@ -1,7 +1,6 @@
 import "!style-loader!css-loader!less-loader!./assets/global.less";
 import { create, themes } from "@storybook/theming";
 import { ThemeVars } from "@storybook/theming/dist/ts3.9/types";
-import { render } from "solid-js/web";
 
 const themeConfig: ThemeVars = {
 	base: "dark",
@@ -15,6 +14,9 @@ const lightTheme = create({
 	base: "light"
 });
 
+const digitOrder = ["二个数字", "三个数字"];
+const equationOrder = ["加法", digitOrder, "减法", digitOrder];
+
 export const parameters = {
 	darkMode: {
 		current: "dark",
@@ -24,23 +26,10 @@ export const parameters = {
 	docs: {
 		theme: themes.dark
 	},
-	controls: { hideNoControlsWarning: true }
-};
-
-let disposeStory;
-
-export const decorators = [
-	Story => {
-		if (disposeStory) {
-			disposeStory();
+	controls: { hideNoControlsWarning: true },
+	options: {
+		storySort: {
+			order: ["一年级", ["20内", equationOrder, "100内", equationOrder]]
 		}
-		const root = document.getElementById("root");
-		const solid = document.createElement("div");
-
-		solid.setAttribute("id", "solid-root");
-		root.appendChild(solid);
-		disposeStory = render(Story, solid);
-		return solid;
-		// return createRoot(() => Story()); // do not work correctly https://github.com/solidjs/solid/issues/553
 	}
-];
+};

@@ -1,0 +1,19 @@
+import { Canvas, Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../../lib/utils";
+
+import QuizContainer from "../../../../components/QuizContainer";
+import QuestionGenerator from "../../../../lib/QuestionGenerator";
+import Addition from "../../../../equation/Addition";
+const questionGenerator = new QuestionGenerator({
+	maxNum: 20,
+	digitSize: 2,
+	EquationClass: Addition
+});
+
+<Meta title="一年级/20内/加法/二个数字" parameters={defaultDocParams()} />
+
+## 一年级 - 20 内加法 - 二个数字
+
+<Canvas className="custom-docs-story">
+	<QuizContainer questionGenerator={questionGenerator} />
+</Canvas>
