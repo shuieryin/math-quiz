@@ -15,7 +15,14 @@ const lightTheme = create({
 });
 
 const digitOrder = ["二个数字", "三个数字"];
-const equationOrder = ["加法", digitOrder, "减法", digitOrder];
+const equationOrder = [
+	"加法",
+	digitOrder,
+	"减法",
+	digitOrder,
+	"加减法",
+	digitOrder
+];
 
 export const parameters = {
 	darkMode: {

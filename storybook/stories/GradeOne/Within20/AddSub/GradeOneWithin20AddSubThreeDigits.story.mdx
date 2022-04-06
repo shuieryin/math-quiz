@@ -3,16 +3,16 @@ import { defaultDocParams } from "../../../../lib/utils";
 
 import QuizContainer from "../../../../components/QuizContainer";
 import QuestionGenerator from "../../../../lib/QuestionGenerator";
-import Subtraction from "../../../../equation/Subtraction";
+import AddSub from "../../../../equation/AddSub";
 const questionGenerator = new QuestionGenerator({
 	maxNum: 20,
-	digitSize: 2,
-	EquationClass: Subtraction
+	digitSize: 3,
+	EquationClass: AddSub
 });
 
-<Meta title="一年级/20内/减法/二个数字" parameters={defaultDocParams()} />
+<Meta title="一年级/20内/加减法/三个数字" parameters={defaultDocParams()} />
 
-## 一年级 - 20 内 - 减法 - 二个数字
+## 一年级 - 20 内 - 加减法 - 三个数字
 
 <Canvas className="custom-docs-story">
 	<QuizContainer questionGenerator={questionGenerator} />

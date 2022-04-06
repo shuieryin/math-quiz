@@ -7,7 +7,7 @@ export const defaultDocParams = () => ({
 	}
 });
 
-export const getRandomInt = (min: number, max: number) => {
+export const randInt = (min: number, max: number) => {
 	min = Math.ceil(min);
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -19,3 +19,5 @@ export const firstEntry = (obj = {}) => {
 		return [key, obj[key]];
 	}
 };
+
+export const randBool = () => Math.random() >= 0.5;
