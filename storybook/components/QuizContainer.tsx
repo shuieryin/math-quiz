@@ -7,6 +7,7 @@ type Props = {
 	questionGenerator: QuestionGenerator;
 };
 
+let keyDownStartTime;
 const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 	const questionSizes = questionGenerator.questionSizes();
 	const [questionSize, setQuestionSize] = useState(questionSizes[2]);
@@ -96,12 +97,29 @@ const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 							return;
 						}
 
-						question.next.inputElement.scrollIntoView({
-							behavior: "auto",
-							block: "center",
-							inline: "center"
-						});
-						question.next.inputElement.focus();
+						if (!keyDownStartTime) {
+							keyDownStartTime = performance.now();
+						}
+					}}
+					onKeyUp={e => {
+						if (
+							e.key !== "Enter" ||
+							!(question.next?.inputElement instanceof HTMLInputElement)
+						) {
+							return;
+						}
+						const pressedTime = performance.now() - keyDownStartTime;
+						if (pressedTime > 500) {
+							question.inputElement.value = "";
+						} else {
+							question.next.inputElement.scrollIntoView({
+								behavior: "auto",
+								block: "center",
+								inline: "center"
+							});
+							question.next.inputElement.focus();
+						}
+						keyDownStartTime = undefined;
 					}}
 				/>
 			</div>
