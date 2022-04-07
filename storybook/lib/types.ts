@@ -8,6 +8,8 @@ export type Question = {
 	answer: number;
 	inputElement?: HTMLInputElement;
 	notCorrect?: boolean;
+	prev?: Question;
+	next?: Question;
 };
 
 export type Questions = Question[];

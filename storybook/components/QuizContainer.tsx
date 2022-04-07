@@ -17,12 +17,14 @@ const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 
 	useEffect(() => {
 		const question: Question = questions[0];
-		if (question) {
+		if (question?.inputElement instanceof HTMLInputElement) {
 			question.inputElement.focus();
 		}
 
 		for (const { inputElement } of questions) {
-			inputElement.value = "";
+			if (inputElement instanceof HTMLInputElement) {
+				inputElement.value = "";
+			}
 		}
 	}, [questions]);
 
@@ -86,6 +88,21 @@ const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 					}}
 					type="number"
 					disabled={submitted}
+					onKeyDown={e => {
+						if (
+							e.key !== "Enter" ||
+							!(question.next?.inputElement instanceof HTMLInputElement)
+						) {
+							return;
+						}
+
+						question.next.inputElement.scrollIntoView({
+							behavior: "auto",
+							block: "center",
+							inline: "center"
+						});
+						question.next.inputElement.focus();
+					}}
 				/>
 			</div>
 		);

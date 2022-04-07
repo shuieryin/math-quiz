@@ -27,6 +27,7 @@ class QuestionGenerator {
 
 		const questions = [];
 		const maxUsedCount = questionSize * 3;
+		let lastQuestion;
 		for (
 			let i = 0;
 			i < Math.min(questionSize, this.equation.maxQuestionSize);
@@ -47,7 +48,13 @@ class QuestionGenerator {
 			}
 
 			usedQuestions.add(question.questionContent);
+			if (lastQuestion) {
+				question.prev = lastQuestion;
+				lastQuestion.next = question;
+			}
+
 			questions.push(question);
+			lastQuestion = question;
 		}
 
 		return questions;
