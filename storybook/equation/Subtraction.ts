@@ -10,6 +10,8 @@ class Subtraction extends Equation {
 
 		if (digitSize === 2 && maxNum <= 20) {
 			this.maxQuestionSize = 100;
+		} else if (digitSize === 3 && maxNum <= 100) {
+			this.maxQuestionSize = 300;
 		} else {
 			this.maxQuestionSize = 500;
 		}

@@ -9,7 +9,7 @@ class Subtraction extends Equation {
 		super(maxNum, digitSize);
 
 		if (digitSize === 2) {
-			this.maxQuestionSize = 100;
+			this.maxQuestionSize = 200;
 		} else {
 			this.maxQuestionSize = 500;
 		}
