@@ -8,8 +8,8 @@ class Addition extends Equation {
 	constructor(maxNum: number, digitSize: number) {
 		super(maxNum, digitSize);
 
-		if (digitSize === 2) {
-			this.maxQuestionSize = 100;
+		if (digitSize === 2 && maxNum <= 20) {
+			this.maxQuestionSize = 80;
 		} else {
 			this.maxQuestionSize = 500;
 		}

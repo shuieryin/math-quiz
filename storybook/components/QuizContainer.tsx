@@ -7,6 +7,7 @@ type Props = {
 	questionGenerator: QuestionGenerator;
 };
 
+const clearInputPressedMilliThreshold = 300;
 let keyDownStartTime;
 const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 	const questionSizes = questionGenerator.questionSizes();
@@ -108,8 +109,8 @@ const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 						) {
 							return;
 						}
-						const pressedTime = performance.now() - keyDownStartTime;
-						if (pressedTime > 500) {
+						const pressedMilli = performance.now() - keyDownStartTime;
+						if (pressedMilli > clearInputPressedMilliThreshold) {
 							question.inputElement.value = "";
 						} else {
 							question.next.inputElement.scrollIntoView({

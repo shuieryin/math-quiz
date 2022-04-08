@@ -8,7 +8,7 @@ class Subtraction extends Equation {
 	constructor(maxNum: number, digitSize: number) {
 		super(maxNum, digitSize);
 
-		if (digitSize === 2) {
+		if (digitSize === 2 && maxNum <= 20) {
 			this.maxQuestionSize = 100;
 		} else {
 			this.maxQuestionSize = 500;
