@@ -4,13 +4,15 @@ import { defaultDocParams } from "../../../../lib/utils";
 import QuizContainer from "../../../../components/QuizContainer";
 import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import Subtraction from "../../../../equation/Subtraction";
+const testName = "一年级/100内/减法/二个数字";
 const questionGenerator = new QuestionGenerator({
+	name: testName,
 	maxNum: 100,
 	digitSize: 2,
 	EquationClass: Subtraction
 });
 
-<Meta title="一年级/100内/减法/二个数字" parameters={defaultDocParams()} />
+<Meta title={testName} parameters={defaultDocParams()} />
 
 ## 一年级 - 100 内 - 减法 - 二个数字
 

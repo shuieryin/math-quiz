@@ -1,10 +1,10 @@
 button {
-	font-size: 30px;
+	//font-size: 30px;
 	width: 100%;
 }
 
 select {
-	font-size: 35px;
+	//font-size: 35px;
 }
 
 label {
@@ -15,28 +15,22 @@ label {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
-	font-size: 30px;
+	//font-size: 30px;
 }
 
 .question-container {
-	font-size: 50px;
-	display: grid;
-	grid-gap: 30px;
-	column-gap: 20%;
-	grid-template-columns: repeat(auto-fit, 330px);
+	//@apply bg-gray-600
+	//font-size: 50px;
+	//display: grid;
+	//grid-gap: 30px;
+	//column-gap: 20%;
+	//grid-template-columns: repeat(auto-fit, 330px);
 }
 
 .question {
 	display: flex;
 	align-items: center;
 	white-space: nowrap;
-}
-
-.question-input {
-	height: 40px;
-	font-size: 40px;
-	width: 70px;
-	margin-left: 15px;
 }
 
 .question-input:focus {
@@ -50,4 +44,10 @@ label {
 	flex-wrap: nowrap;
 	justify-content: space-around;
 	column-gap: 30px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
 }

@@ -5,17 +5,21 @@ const defaultQuestionSizes = [
 ];
 
 class QuestionGenerator {
+	name: string;
 	equation: Equation;
 
 	constructor({
+		name,
 		maxNum,
 		digitSize,
 		EquationClass
 	}: {
+		name: string;
 		maxNum: number;
 		digitSize: number;
 		EquationClass: typeof Equation;
 	}) {
+		this.name = name;
 		this.equation = new EquationClass(maxNum, digitSize);
 	}
 

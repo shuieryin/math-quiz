@@ -4,13 +4,15 @@ import { defaultDocParams } from "../../../../lib/utils";
 import QuizContainer from "../../../../components/QuizContainer";
 import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import AddSub from "../../../../equation/AddSub";
+const testName = "一年级/20内/加减法/二个数字";
 const questionGenerator = new QuestionGenerator({
+	name: testName,
 	maxNum: 20,
 	digitSize: 2,
 	EquationClass: AddSub
 });
 
-<Meta title="一年级/20内/加减法/二个数字" parameters={defaultDocParams()} />
+<Meta title={testName} parameters={defaultDocParams()} />
 
 ## 一年级 - 20 内 - 加减法 - 二个数字
 

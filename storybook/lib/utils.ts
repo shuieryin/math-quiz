@@ -21,3 +21,10 @@ export const firstEntry = (obj = {}) => {
 };
 
 export const randBool = () => Math.random() >= 0.5;
+
+export const milliToMinSec = (milli: number) => {
+	const minutes = Math.floor(milli / (60 * 1000));
+	const seconds = ((milli % (60 * 1000)) / 1000).toFixed(2);
+
+	return { minutes, seconds };
+};
