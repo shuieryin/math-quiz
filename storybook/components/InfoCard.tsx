@@ -11,17 +11,15 @@ type Props = {
 const InfoCard: FC<Props> = ({ header, content, bgColor, borderColor }) => {
 	return (
 		<div
-			className={`w-full p-6 rounded-lg shadow-lg bg-${bgColor}-100 hover:bg-${bgColor}-200 border border-${borderColor}-200 dark:bg-${borderColor}-800 dark:border-${borderColor}-700`}
+			className={`w-full p-6 rounded-lg shadow-lg bg-${bgColor}-100 dark:bg-${bgColor}-100 hover:bg-${bgColor}-200 dark:hover:bg-${bgColor}-200 border border-${borderColor}-200 dark:border-${borderColor}-200`}
 		>
 			{header && (
-				<h5 className="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+				<h5 className="mb-2 text-3xl font-bold tracking-tight text-gray-900">
 					{header}
 				</h5>
 			)}
 			{content && (
-				<p className="font-normal text-2xl text-gray-700 dark:text-gray-400">
-					{content}
-				</p>
+				<p className="font-normal text-2xl text-gray-700">{content}</p>
 			)}
 		</div>
 	);
