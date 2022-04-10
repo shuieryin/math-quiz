@@ -6,7 +6,7 @@ import { LoaderMedium } from "./Icons";
 import QuizReportInfoCard from "./QuizReportInfoCard";
 import QuizControl from "./QuizControl";
 import QuestionCard from "./QuestionCard";
-import useInitDb from "../hooks/useInitDb";
+import useInitQuiz from "../hooks/useInitQuiz";
 import useQuiz from "../hooks/useQuiz";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const QuizContainer: FC<Props> = ({ questionGenerator }) => {
-	useInitDb(questionGenerator);
+	useInitQuiz(questionGenerator);
 
 	const {
 		startQuiz,

@@ -24,7 +24,7 @@ const QuestionCard: FC<Props> = ({ question, disabled }) => {
 			</span>
 			<input
 				ref={input => (question.inputElement = input)}
-				className={`question-input flex-1 w-20 h-10 rounded-md shadow-lg m-auto ml-5 text-4xl text-center font-semibold p-2 focus:bg-yellow-100 focus:outline-none ${inputBoxBgColor}`}
+				className={`flex-1 w-20 h-10 rounded-md shadow-lg ml-5 text-4xl text-center font-semibold p-2 focus:bg-yellow-100 focus:outline-none p-0 ${inputBoxBgColor}`}
 				type="number"
 				disabled={disabled}
 				onKeyDown={e => {

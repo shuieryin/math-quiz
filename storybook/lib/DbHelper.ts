@@ -78,8 +78,8 @@ export const initDb = () => {
 		request.onupgradeneeded = event => {
 			const db = event.target["result"] as IDBDatabase;
 
-			createStore(db, quizReportStoreConfig);
 			createStore(db, incorrectQuestionStoreConfig);
+			createStore(db, quizReportStoreConfig);
 
 			resolve();
 		};
