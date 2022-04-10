@@ -71,29 +71,4 @@ export const incorrectQuestionPenalty = 10;
 export type DisplayTypeAtom = string | number | boolean | Element | ElementType;
 export type DisplayType = DisplayTypeAtom | DisplayTypeAtom[];
 
-export type TailWindColorName =
-	| "amber"
-	| "gray"
-	| "orange"
-	| "blue"
-	| "cyan"
-	| "emerald"
-	| "fuchsia"
-	| "green"
-	| "indigo"
-	| "lime"
-	| "neutral"
-	| "opacity"
-	| "pink"
-	| "purple"
-	| "red"
-	| "rose"
-	| "sky"
-	| "slate"
-	| "stone"
-	| "teal"
-	| "violet"
-	| "yellow"
-	| "zinc";
-
 export const clearInputPressedMilliThreshold = 300;
