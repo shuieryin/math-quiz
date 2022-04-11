@@ -21,7 +21,7 @@ const InfoCard: FC<Props> = ({
 	const body = (
 		<>
 			{header && (
-				<h5 className="mb-2 text-3xl font-bold tracking-tight text-gray-900">
+				<h5 className="mb-2 text-3xl font-bold tracking-tight text-white">
 					{header}
 				</h5>
 			)}
@@ -29,7 +29,7 @@ const InfoCard: FC<Props> = ({
 				(isValidElement(content) ? (
 					content
 				) : (
-					<p className="font-normal text-2xl text-gray-700">{content}</p>
+					<p className="font-normal text-2xl text-gray-300">{content}</p>
 				))}
 		</>
 	);
@@ -48,8 +48,6 @@ const InfoCard: FC<Props> = ({
 };
 
 InfoCard.defaultProps = {
-	hoverBgColor: "bg-gray-100",
-	borderColor: "border-gray-200",
 	withoutBorder: false
 };
 

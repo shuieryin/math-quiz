@@ -1,6 +1,31 @@
 import { StoreConfig, StoreName, StoreRecord } from "./types";
 
+if (!window.indexedDB) {
+	window["indexedDB"] =
+		window["mozIndexedDB"] ||
+		window["webkitIndexedDB"] ||
+		window["msIndexedDB"];
+}
+
+if (!window.IDBTransaction) {
+	window.IDBTransaction = window["webkitIDBTransaction"] ||
+		window["msIDBTransaction"] || { READ_WRITE: "readwrite" };
+}
+
+if (!window.IDBKeyRange) {
+	window.IDBKeyRange = window["webkitIDBKeyRange"] || window["msIDBKeyRange"];
+}
+
+if (!window.indexedDB) {
+	console.error(
+		"Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available."
+	);
+}
+
 export const dbName = "math-quiz";
+export const dbVersion = 8;
+
+const requestDb = () => indexedDB.open(dbName, dbVersion);
 
 const quizReportStoreConfig: StoreConfig = {
 	name: "quizReport",
@@ -13,41 +38,6 @@ const quizReportStoreConfig: StoreConfig = {
 		elapsedMilli: { unique: false }
 	}
 };
-
-const incorrectQuestionStoreConfig: StoreConfig = {
-	name: "incorrectQuestion",
-	options: { keyPath: "questionContent" },
-	indexes: {
-		questionContent: { unique: true },
-		answer: { unique: false },
-		count: { unique: false }
-	}
-};
-
-export const checkIndexedDb = () => {
-	if (!window.indexedDB) {
-		window["indexedDB"] =
-			window["mozIndexedDB"] ||
-			window["webkitIndexedDB"] ||
-			window["msIndexedDB"];
-	}
-
-	if (!window.IDBTransaction) {
-		window.IDBTransaction = window["webkitIDBTransaction"] ||
-			window["msIDBTransaction"] || { READ_WRITE: "readwrite" };
-	}
-
-	if (!window.IDBKeyRange) {
-		window.IDBKeyRange = window["webkitIDBKeyRange"] || window["msIDBKeyRange"];
-	}
-
-	if (!window.indexedDB) {
-		console.error(
-			"Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available."
-		);
-	}
-};
-checkIndexedDb();
 
 const createStore = (db: IDBDatabase, storeConfig: StoreConfig) => {
 	const { name, options, indexes } = storeConfig;
@@ -67,8 +57,18 @@ const createStore = (db: IDBDatabase, storeConfig: StoreConfig) => {
 	};
 };
 
+const incorrectQuestionStoreConfig: StoreConfig = {
+	name: "incorrectQuestion",
+	options: { keyPath: "questionContent" },
+	indexes: {
+		questionContent: { unique: true },
+		answer: { unique: false },
+		count: { unique: false }
+	}
+};
+
 export const initDb = () => {
-	const request = indexedDB.open(dbName);
+	const request = requestDb();
 	return new Promise<void>(resolve => {
 		request.onerror = () => {
 			console.error(`Error opening database [${dbName}].`);
@@ -91,8 +91,7 @@ export const initDb = () => {
 };
 
 export const addRecord = (storeName: StoreName, record: StoreRecord) => {
-	const request = indexedDB.open(dbName);
-
+	const request = requestDb();
 	return new Promise<void>(resolve => {
 		request.onerror = () => {
 			console.error(
@@ -128,8 +127,7 @@ export const addRecord = (storeName: StoreName, record: StoreRecord) => {
 };
 
 export const removeRecord = (storeName: StoreName, key: string) => {
-	const request = indexedDB.open(dbName);
-
+	const request = requestDb();
 	return new Promise<void>(resolve => {
 		request.onerror = () => {
 			console.error(
@@ -162,8 +160,7 @@ export const removeRecord = (storeName: StoreName, key: string) => {
 };
 
 export const getRecord = (storeName: StoreName, key) => {
-	const request = indexedDB.open(dbName);
-
+	const request = requestDb();
 	return new Promise<StoreRecord>(resolve => {
 		request.onerror = () => {
 			console.error(
@@ -196,8 +193,7 @@ export const forEachRecord = <Record extends StoreRecord>(
 	storeName: StoreName,
 	callback: (record: Record) => void | Promise<void>
 ) => {
-	const request = indexedDB.open(dbName);
-
+	const request = requestDb();
 	return new Promise<void>(resolve => {
 		request.onerror = () => {
 			console.error(

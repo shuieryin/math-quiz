@@ -66,7 +66,7 @@ export type StoreConfig = {
 	};
 };
 
-export const incorrectQuestionPenalty = 10;
+export const incorrectQuestionPenalty = 3;
 
 export type DisplayTypeAtom =
 	| string

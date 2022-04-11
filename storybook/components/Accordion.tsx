@@ -24,7 +24,7 @@ const Accordion: FC<Props> = ({
 				<h2>
 					<button
 						type="button"
-						className={`flex justify-between items-center p-5 w-full font-medium text-left text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 hover:bg-gray-100${
+						className={`flex justify-between items-center p-5 w-full font-medium text-left text-gray-300 border border-gray-200 focus:ring-4 focus:ring-gray-200${
 							first ? " rounded-t-lg" : ""
 						}${!open && last ? " rounded-b-lg" : ""}${
 							open ? " border-b-0" : ""

@@ -3,7 +3,7 @@ import QuestionGenerator from "../lib/QuestionGenerator";
 import { Questions, QuizReport, QuizSummary } from "../lib/types";
 import InfoCard from "./InfoCard";
 import { milliToMinSec } from "../lib/utils";
-import { forEachRecord } from "../lib/DbHelper";
+import { forEachRecord, initDb } from "../lib/DbHelper";
 import Accordion from "./Accordion";
 
 export type OnStart = (questionSize: number) => void | Promise<void>;
@@ -25,6 +25,7 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 
 	useEffect(() => {
 		(async () => {
+			await initDb();
 			const existingQuizReports: QuizReport[] = [];
 			let totalSize = 0;
 			let totalCorrect = 0;
@@ -96,8 +97,8 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 						header={`你总共答对了 ${totalCorrect} / ${totalSize} 题 !`}
 						content={
 							<>
-								<p className="text-2xl">正确率 {accuracy}%</p>
-								<p className="text-2xl">
+								<p className="text-2xl text-gray-300">正确率 {accuracy}%</p>
+								<p className="text-2xl text-gray-300">
 									平均每题用时 {averageQuestionElapsedMinutes} 分{" "}
 									{averageQuestionElapsedSeconds} 秒
 								</p>
