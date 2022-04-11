@@ -14,7 +14,7 @@ type Props = {
 };
 
 const QuizContainer: FC<Props> = ({ questionGenerator }) => {
-	useInitQuiz(questionGenerator);
+	useInitQuiz();
 
 	const {
 		startQuiz,
@@ -78,6 +78,7 @@ const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 				<QuizControl
 					questionGenerator={questionGenerator}
 					onStart={startQuiz}
+					questions={questions}
 				/>
 			)}
 		</div>

@@ -1,4 +1,4 @@
-import { ElementType } from "react";
+import { ReactElement } from "react";
 
 export type IntRange = {
 	start?: number;
@@ -68,7 +68,18 @@ export type StoreConfig = {
 
 export const incorrectQuestionPenalty = 10;
 
-export type DisplayTypeAtom = string | number | boolean | Element | ElementType;
+export type DisplayTypeAtom =
+	| string
+	| number
+	| boolean
+	| Element
+	| ReactElement;
 export type DisplayType = DisplayTypeAtom | DisplayTypeAtom[];
 
 export const clearInputPressedMilliThreshold = 300;
+
+export type QuizSummary = {
+	totalCorrect: number;
+	totalSize: number;
+	perQuestionTookMilli: number;
+};
