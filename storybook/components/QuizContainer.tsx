@@ -7,6 +7,7 @@ import QuizReportInfoCard from "./QuizReportInfoCard";
 import QuizControl from "./QuizControl";
 import QuestionCard from "./QuestionCard";
 import useQuiz from "../hooks/useQuiz";
+import { quizReportColor } from "../lib/utils";
 
 type Props = {
 	questionGenerator: QuestionGenerator;
@@ -70,7 +71,12 @@ const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 					)}
 				</div>
 			)}
-			{quizReport && <QuizReportInfoCard quizReport={quizReport} />}
+			{quizReport && (
+				<QuizReportInfoCard
+					bgColor={quizReportColor(quizReport)}
+					quizReport={quizReport}
+				/>
+			)}
 			{(questionElements.length === 0 || submitted) && (
 				<QuizControl
 					questionGenerator={questionGenerator}

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { DisplayType } from "../lib/types";
 import { ArrowDown, ArrowUp } from "./Icons";
 
@@ -8,6 +8,9 @@ type Props = {
 	header?: DisplayType;
 	content?: DisplayType;
 	open?: boolean;
+	onOpen?: (open: boolean) => void | Promise<void>;
+	bgColor?: string;
+	disabled?: boolean;
 };
 
 const Accordion: FC<Props> = ({
@@ -15,34 +18,49 @@ const Accordion: FC<Props> = ({
 	last,
 	header,
 	content,
-	open: openProp
+	open: openProp,
+	onOpen,
+	bgColor,
+	disabled
 }) => {
 	const [open, setOpen] = useState<boolean>(openProp);
+
+	useEffect(() => {
+		setOpen(openProp);
+	}, [openProp]);
+
 	return (
 		<>
 			{header && (
 				<h2>
 					<button
 						type="button"
-						className={`flex justify-between items-center p-5 w-full font-medium text-left text-gray-300 border border-gray-200 focus:ring-4 focus:ring-gray-200${
+						className={`flex justify-between items-center p-5 w-full font-medium text-left text-gray-300 border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800${
 							first ? " rounded-t-lg" : ""
 						}${!open && last ? " rounded-b-lg" : ""}${
-							open ? " border-b-0" : ""
-						}`}
+							open || !last ? " border-b-0" : ""
+						}${open ? " bg-gray-100 bg-gray-800" : ""}`}
 						aria-expanded={open}
-						onClick={() => setOpen(!open)}
+						onClick={async () => {
+							if (disabled) return;
+							const nextOpen = !open;
+							onOpen(nextOpen);
+							setOpen(nextOpen);
+						}}
 					>
 						<span className="text-3xl">{header}</span>
-						{open ? ArrowUp() : ArrowDown()}
+						{!disabled && (open ? ArrowUp() : ArrowDown())}
 					</button>
 				</h2>
 			)}
 			{content && (
 				<div className={`${open ? "" : "hidden"}`}>
 					<div
-						className={`p-5 border border-gray-200${
-							!header && first ? " rounded-t-lg" : ""
-						}${last ? " rounded-b-lg" : ""}${!last ? " border-b-0" : ""}`}
+						className={`relative p-5 border border-gray-200 dark:border-gray-700${
+							bgColor ? ` ${bgColor}` : ""
+						}${!header && first ? " rounded-t-lg" : ""}${
+							last ? " rounded-b-lg" : ""
+						}${!last ? " border-b-0" : ""}`}
 					>
 						{content}
 					</div>
@@ -55,7 +73,9 @@ const Accordion: FC<Props> = ({
 Accordion.defaultProps = {
 	open: false,
 	first: false,
-	last: false
+	last: false,
+	onOpen: () => {},
+	disabled: false
 };
 
 export default Accordion;

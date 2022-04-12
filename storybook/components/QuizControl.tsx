@@ -2,9 +2,14 @@ import React, { FC, useEffect, useState } from "react";
 import QuestionGenerator from "../lib/QuestionGenerator";
 import { Questions, QuizReport, QuizSummary } from "../lib/types";
 import InfoCard from "./InfoCard";
-import { milliToMinSec } from "../lib/utils";
+import {
+	accuracyRateColor,
+	milliToMinSec,
+	quizReportColor
+} from "../lib/utils";
 import { forEachRecord, initDb } from "../lib/DbHelper";
 import Accordion from "./Accordion";
+import QuizReportInfoCard from "./QuizReportInfoCard";
 
 export type OnStart = (questionSize: number) => void | Promise<void>;
 
@@ -17,30 +22,28 @@ type Props = {
 const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 	const questionSizes = questionGenerator.questionSizes();
 	const [questionSize, setQuestionSize] = useState(questionSizes[1]);
-	const [quizSummary, setQuizSummary] = useState<QuizSummary>({
-		totalCorrect: 0,
-		totalSize: 0,
-		perQuestionTookMilli: 0
-	});
+	const [quizSummary, setQuizSummary] = useState<QuizSummary>();
+	const [quizReports, setQuizReports] = useState<QuizReport[]>([]);
+	const [openHistory, setOpenHistory] = useState(false);
 
 	useEffect(() => {
 		(async () => {
 			await initDb();
-			const existingQuizReports: QuizReport[] = [];
+			const quizReports: QuizReport[] = [];
 			let totalSize = 0;
 			let totalCorrect = 0;
 			let totalElapsed = 0;
-			await forEachRecord<QuizReport>("quizReport", record => {
-				const { quizName, totalCount, correctCount, elapsedMilli } = record;
+			await forEachRecord<QuizReport>("quizReport", quizReport => {
+				const { quizName, totalCount, correctCount, elapsedMilli } = quizReport;
 				if (quizName === questionGenerator.name) {
-					existingQuizReports.push(record);
+					quizReports.push(quizReport);
 					totalSize += totalCount;
 					totalCorrect += correctCount;
 					totalElapsed += elapsedMilli;
 				}
 			});
 
-			if (existingQuizReports.length > 0) {
+			if (quizReports.length > 0) {
 				const perQuestionTookMilli = totalElapsed / totalSize;
 
 				const quizSummary: QuizSummary = {
@@ -48,18 +51,40 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 					totalSize,
 					perQuestionTookMilli
 				};
+				quizReports.reverse();
 				setQuizSummary(quizSummary);
+				setQuizReports(quizReports);
 			}
 		})();
 	}, [questions]);
 
-	const { perQuestionTookMilli, totalCorrect, totalSize } = quizSummary;
-	const {
-		minutes: averageQuestionElapsedMinutes,
-		seconds: averageQuestionElapsedSeconds
-	} = milliToMinSec(perQuestionTookMilli);
-	const accuracy =
-		totalSize > 0 ? ((totalCorrect / totalSize) * 100).toFixed(2) : 0;
+	let quizSummaryElement, accuracyRate;
+	if (quizSummary) {
+		const { perQuestionTookMilli, totalCorrect, totalSize } = quizSummary;
+		const {
+			minutes: averageQuestionElapsedMinutes,
+			seconds: averageQuestionElapsedSeconds
+		} = milliToMinSec(perQuestionTookMilli);
+		accuracyRate = totalSize > 0 ? (totalCorrect / totalSize) * 100 : 0;
+
+		quizSummaryElement = (
+			<InfoCard
+				withoutBorder={true}
+				header={`你总共答对了 ${totalCorrect} / ${totalSize} 题 !`}
+				content={
+					<>
+						<p className="text-2xl text-gray-300">
+							正确率 {accuracyRate.toFixed(2)}%
+						</p>
+						<p className="text-2xl text-gray-300">
+							平均每题用时 {averageQuestionElapsedMinutes} 分{" "}
+							{averageQuestionElapsedSeconds} 秒
+						</p>
+					</>
+				}
+			/>
+		);
+	}
 
 	return (
 		<div>
@@ -89,24 +114,34 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 				}
 			/>
 			<Accordion
+				header="成绩总结"
+				bgColor={quizSummary && accuracyRateColor(accuracyRate)}
+				content={quizSummaryElement}
+				disabled={!quizSummary}
+			/>
+			<Accordion
+				header="历史成绩"
 				last={true}
-				header="数据总结"
-				content={
-					<InfoCard
-						withoutBorder={true}
-						header={`你总共答对了 ${totalCorrect} / ${totalSize} 题 !`}
+				onOpen={open => setOpenHistory(open)}
+				disabled={quizReports.length === 0}
+			/>
+			{quizReports.map((quizReport, i) => {
+				const { createTime } = quizReport;
+				return (
+					<Accordion
+						key={`quiz-${createTime}`}
+						open={openHistory}
+						last={quizReports.length - 1 === i}
+						bgColor={quizReportColor(quizReport)}
 						content={
-							<>
-								<p className="text-2xl text-gray-300">正确率 {accuracy}%</p>
-								<p className="text-2xl text-gray-300">
-									平均每题用时 {averageQuestionElapsedMinutes} 分{" "}
-									{averageQuestionElapsedSeconds} 秒
-								</p>
-							</>
+							<QuizReportInfoCard
+								withoutBorder={true}
+								quizReport={quizReport}
+							/>
 						}
 					/>
-				}
-			/>
+				);
+			})}
 		</div>
 	);
 };

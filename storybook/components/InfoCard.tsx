@@ -39,7 +39,7 @@ const InfoCard: FC<Props> = ({
 	} else {
 		return (
 			<div
-				className={`w-full p-6 rounded-lg shadow-lg ${bgColor} hover:${hoverBgColor} border ${borderColor}`}
+				className={`w-full p-6 relative rounded-lg shadow-lg ${bgColor} hover:${hoverBgColor} border ${borderColor}`}
 			>
 				{body}
 			</div>
