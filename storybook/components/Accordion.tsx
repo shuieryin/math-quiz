@@ -35,7 +35,7 @@ const Accordion: FC<Props> = ({
 				<h2>
 					<button
 						type="button"
-						className={`flex justify-between items-center p-5 w-full font-medium text-left text-gray-300 border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800${
+						className={`flex justify-between items-center p-5 w-full font-medium text-left text-gray-400 border border-gray-700 focus:ring-4 focus:ring-gray-800 hover:bg-gray-800${
 							first ? " rounded-t-lg" : ""
 						}${!open && last ? " rounded-b-lg" : ""}${
 							open || !last ? " border-b-0" : ""
@@ -56,7 +56,7 @@ const Accordion: FC<Props> = ({
 			{content && (
 				<div className={`${open ? "" : "hidden"}`}>
 					<div
-						className={`relative p-5 border border-gray-200 dark:border-gray-700${
+						className={`relative p-5 border border-gray-700${
 							bgColor ? ` ${bgColor}` : ""
 						}${!header && first ? " rounded-t-lg" : ""}${
 							last ? " rounded-b-lg" : ""
