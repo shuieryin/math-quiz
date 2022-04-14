@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { addRecord, getRecord, removeRecord } from "../lib/DbHelper";
+import {
+	addRecord,
+	forEachRecord,
+	getRecord,
+	removeRecord
+} from "../lib/DbHelper";
 import {
 	IncorrectQuestion,
 	incorrectQuestionPenalty,
@@ -16,10 +21,35 @@ export default ({ name, genQuestions }: QuestionGenerator) => {
 	const [submitting, setSubmitting] = useState(false);
 	const [submitted, setSubmitted] = useState(false);
 
-	const startQuiz: OnStart = questionSize => {
+	const startQuiz: OnStart = async questionSize => {
+		const incorrectQuestionToBeReused: Questions = [];
+		const incorrectQuestionsNeedRemove: string[] = [];
+		await forEachRecord<IncorrectQuestion>(
+			"incorrectQuestion",
+			async ({ questionContent, answer, quizName }) => {
+				if (!quizName) {
+					incorrectQuestionsNeedRemove.push(questionContent);
+				} else {
+					if (quizName === name) {
+						incorrectQuestionToBeReused.push({
+							questionContent,
+							answer,
+							isReuse: true,
+							quizName
+						});
+					}
+				}
+			}
+		);
+
+		// remove old records that have no quizName
+		for (const questionNeedRemove of incorrectQuestionsNeedRemove) {
+			await removeRecord("incorrectQuestion", questionNeedRemove);
+		}
+
 		setSubmitted(false);
 		setQuizReport(undefined);
-		setQuestions(() => genQuestions(questionSize));
+		setQuestions(() => genQuestions(questionSize, incorrectQuestionToBeReused));
 		setStartTime(new Date().getTime());
 
 		window.scrollTo({ top: 0, behavior: "smooth" });
@@ -34,7 +64,7 @@ export default ({ name, genQuestions }: QuestionGenerator) => {
 
 		let correctCount = 0;
 		for (const question of questions) {
-			const { answer, inputElement, questionContent } = question;
+			const { answer, inputElement, questionContent, quizName } = question;
 
 			const { value: inputAnswer } = inputElement;
 
@@ -60,7 +90,8 @@ export default ({ name, genQuestions }: QuestionGenerator) => {
 				// add incorrect question with penalty count
 				const incorrectQuestion: IncorrectQuestion = {
 					questionContent,
-					answer
+					answer,
+					quizName
 				};
 
 				if (existingIncorrectQuestion) {

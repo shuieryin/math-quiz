@@ -14,7 +14,6 @@ module.exports = baseConfig => {
 
 	const [miniCssPlugin] = plugins;
 	baseConfig.config.plugins = [...baseConfig.config.plugins, miniCssPlugin];
-	baseConfig.config.watch = true;
 
 	return baseConfig.config;
 };

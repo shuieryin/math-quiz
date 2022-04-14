@@ -1,34 +1,21 @@
 import { ReactElement } from "react";
 
-export type IntRange = {
-	start?: number;
-	end?: number;
-};
-
 export type Question = {
+	quizName?: string;
 	questionContent: string;
 	answer: number;
 	inputElement?: HTMLInputElement;
 	correct?: boolean;
 	prev?: Question;
 	next?: Question;
+	isReuse?: boolean;
 };
 
 export type Questions = Question[];
 
-export type SubmittedQuestion = Required<
-	Pick<Question, "questionContent" | "answer">
-> & {
-	inputAnswer: string;
-};
-
-export type SubmittedQuestions = SubmittedQuestion[];
-
 export type IncorrectQuestion = Required<
 	Pick<Question, "questionContent" | "answer">
-> & { count?: number };
-
-export type IncorrectQuestions = IncorrectQuestion[];
+> & { count?: number; quizName: string };
 
 export type EquationResult = Required<
 	Pick<Question, "questionContent" | "answer">

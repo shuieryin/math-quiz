@@ -15,6 +15,7 @@ export const randInt = (min: number, max: number) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+// noinspection JSUnusedGlobalSymbols
 export const firstEntry = (obj = {}) => {
 	// noinspection LoopStatementThatDoesntLoopJS
 	for (const key in obj) {
@@ -81,4 +82,8 @@ export const accuracyRateColor = (accuracyRate: number) => {
 	}
 
 	return bgColor;
+};
+
+export const shuffle = (list: unknown[]) => {
+	list.sort(() => Math.random() - 0.5);
 };

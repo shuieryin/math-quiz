@@ -23,7 +23,7 @@ if (!window.indexedDB) {
 }
 
 export const dbName = "math-quiz";
-export const dbVersion = 8;
+export const dbVersion = 9;
 
 const requestDb = () => indexedDB.open(dbName, dbVersion);
 
@@ -63,7 +63,8 @@ const incorrectQuestionStoreConfig: StoreConfig = {
 	indexes: {
 		questionContent: { unique: true },
 		answer: { unique: false },
-		count: { unique: false }
+		count: { unique: false },
+		quizName: { unique: false }
 	}
 };
 
