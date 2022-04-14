@@ -91,6 +91,7 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 			<Accordion
 				open={true}
 				first={true}
+				last={!quizSummary}
 				content={
 					<div className="flex flex-row flex-nowrap gap-x-5 items-center !text-3xl">
 						<select
@@ -113,18 +114,21 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 					</div>
 				}
 			/>
-			<Accordion
-				header="成绩总结"
-				bgColor={quizSummary && accuracyRateColor(accuracyRate)}
-				content={quizSummaryElement}
-				disabled={!quizSummary}
-			/>
-			<Accordion
-				header="历史成绩"
-				last={true}
-				onOpen={open => setOpenHistory(open)}
-				disabled={quizReports.length === 0}
-			/>
+			{quizSummary && (
+				<Accordion
+					header="成绩总结"
+					bgColor={accuracyRateColor(accuracyRate)}
+					content={quizSummaryElement}
+					last={quizReports.length === 0}
+				/>
+			)}
+			{quizReports.length > 0 && (
+				<Accordion
+					header="历史成绩"
+					last={true}
+					onOpen={open => setOpenHistory(open)}
+				/>
+			)}
 			{quizReports.map((quizReport, i) => {
 				const { createTime } = quizReport;
 				return (
