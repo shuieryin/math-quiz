@@ -48,7 +48,7 @@ const Accordion: FC<Props> = ({
 							setOpen(nextOpen);
 						}}
 					>
-						<span className="text-3xl">{header}</span>
+						<span className="text-3xl text-white font-semibold">{header}</span>
 						{!disabled && (open ? ArrowUp() : ArrowDown())}
 					</button>
 				</h2>

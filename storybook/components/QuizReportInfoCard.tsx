@@ -25,7 +25,7 @@ const QuizReportInfoCard: FC<Props> = ({
 			header={`你答对了 ${correctCount} / ${totalCount} 题 !`}
 			content={
 				<>
-					<div className="text-3xl text-gray-300">
+					<div className="text-3xl text-gray-200">
 						用时 {elapsedMinutes} 分 {elapsedSeconds} 秒
 					</div>
 					<div className="sm:absolute right-6 top-6">

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import { DisplayType } from "../lib/types";
 
 type Props = {
@@ -18,13 +18,14 @@ const Tooltip: FC<Props> = ({
 	children,
 	mode
 }) => {
+	const buttonRef = useRef<HTMLButtonElement>();
 	const [isOpen, setIsOpen] = useState<boolean>(open);
 	let triggerEvents;
+
 	switch (mode) {
 		case "click": {
 			triggerEvents = {
-				onFocus: () => setIsOpen(true),
-				onBlur: () => setIsOpen(false)
+				onClick: () => setIsOpen(true)
 			};
 			break;
 		}
@@ -37,9 +38,28 @@ const Tooltip: FC<Props> = ({
 		}
 	}
 
+	useEffect(() => {
+		// special handling for iPad
+		if (mode === "click") {
+			const hideTooltip = (e?: MouseEvent) => {
+				if (
+					buttonRef.current instanceof HTMLElement &&
+					e?.target !== buttonRef.current &&
+					!buttonRef.current.contains(e?.target as HTMLElement)
+				) {
+					setIsOpen(false);
+				}
+			};
+
+			document.addEventListener("click", hideTooltip);
+			return () => hideTooltip();
+		}
+	}, []);
+
 	return (
 		<>
 			<button
+				ref={buttonRef}
 				className={`absolute h-8 w-8 ${triggerPosition}`}
 				{...triggerEvents}
 			>

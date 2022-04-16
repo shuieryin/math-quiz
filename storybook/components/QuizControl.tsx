@@ -73,10 +73,10 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 				header={`你总共答对了 ${totalCorrect} / ${totalSize} 题 !`}
 				content={
 					<>
-						<p className="text-2xl text-gray-300">
+						<p className="text-2xl text-gray-200">
 							正确率 {accuracyRate.toFixed(2)}%
 						</p>
-						<p className="text-2xl text-gray-300">
+						<p className="text-2xl text-gray-200">
 							平均每题用时 {averageQuestionElapsedMinutes} 分{" "}
 							{averageQuestionElapsedSeconds} 秒
 						</p>
@@ -93,9 +93,9 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 				first={true}
 				last={!quizSummary}
 				content={
-					<div className="flex flex-row flex-nowrap gap-x-5 items-center !text-3xl">
+					<div className="flex flex-row flex-nowrap gap-x-5 items-center">
 						<select
-							className="rounded-md shadow-lg form-select form-select-sm px-2 py-1 !text-3xl font-normal text-gray-700 bg-clip-padding bg-no-repeat border border-solid transition ease-in-out m-0 bg-gray-400 hover:bg-gray-500 border-none text-gray-900"
+							className="rounded-md shadow-lg form-select form-select-sm px-2 py-1 text-3xl font-normal text-gray-700 bg-clip-padding bg-no-repeat border border-solid transition ease-in-out m-0 bg-gray-400 hover:bg-gray-500 border-none text-gray-900"
 							value={questionSize}
 							onChange={e => setQuestionSize(Number(e.target.value))}
 						>

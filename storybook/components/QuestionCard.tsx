@@ -18,7 +18,7 @@ const QuestionCard: FC<Props> = ({ question, disabled }) => {
 		topLeftIcon = (
 			<div className="absolute h-8 w-8 -left-4 -top-4">
 				{CheckCircle(
-					"text-green-500 bg-gray-400 rounded-full dark:text-green-400"
+					"text-green-700 bg-gray-400 rounded-full dark:text-green-400"
 				)}
 			</div>
 		);
@@ -32,9 +32,7 @@ const QuestionCard: FC<Props> = ({ question, disabled }) => {
 	} else if (isReuse) {
 		topLeftIcon = (
 			<Tooltip
-				trigger={Exclamation(
-					"text-yellow-500 bg-gray-400 rounded-full dark:text-yellow-400"
-				)}
+				trigger={Exclamation("text-yellow-400 bg-gray-400 rounded-full")}
 				position="-top-6 left-6"
 				mode="click"
 			>
