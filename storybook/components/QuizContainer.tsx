@@ -8,6 +8,7 @@ import QuizControl from "./QuizControl";
 import QuestionCard from "./QuestionCard";
 import useQuiz from "../hooks/useQuiz";
 import { quizReportColor } from "../lib/utils";
+import nls from "../nls";
 
 type Props = {
 	questionGenerator: QuestionGenerator;
@@ -65,7 +66,7 @@ const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 							onClick={handleSubmit}
 							disabled={submitted}
 						>
-							提交答案
+							{nls.get("submit-answer")}
 							{submitting && <LoaderMedium />}
 						</button>
 					)}

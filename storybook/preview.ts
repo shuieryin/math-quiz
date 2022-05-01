@@ -2,10 +2,11 @@ import "!style-loader!css-loader!postcss-loader!tailwindcss/tailwind.css";
 import "!style-loader!css-loader!less-loader!./assets/global.less";
 import { create, themes } from "@storybook/theming";
 import { ThemeVars } from "@storybook/theming/dist/ts3.9/types";
+import nls from "./nls";
 
 const themeConfig: ThemeVars = {
 	base: "dark",
-	brandTitle: "数学练习"
+	brandTitle: nls.get("math-quiz")
 };
 
 const darkTheme = create(themeConfig);
@@ -15,13 +16,13 @@ const lightTheme = create({
 	base: "light"
 });
 
-const digitOrder = ["二个数字", "三个数字"];
+const digitOrder = [nls.get("two-digits"), nls.get("three-digits")];
 const equationOrder = [
-	"加法",
+	nls.get("addition"),
 	digitOrder,
-	"减法",
+	nls.get("subtraction"),
 	digitOrder,
-	"加减法",
+	nls.get("addition-and-subtraction"),
 	digitOrder
 ];
 
@@ -37,7 +38,15 @@ export const parameters = {
 	controls: { hideNoControlsWarning: true },
 	options: {
 		storySort: {
-			order: ["一年级", ["20内", equationOrder, "100内", equationOrder]]
+			order: [
+				nls.get("grade-one"),
+				[
+					nls.get("within-20"),
+					equationOrder,
+					nls.get("within-100"),
+					equationOrder
+				]
+			]
 		}
 	}
 };

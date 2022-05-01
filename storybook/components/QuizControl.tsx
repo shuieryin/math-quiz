@@ -10,6 +10,7 @@ import {
 import { forEachRecord, initDb } from "../lib/DbHelper";
 import Accordion from "./Accordion";
 import QuizReportInfoCard from "./QuizReportInfoCard";
+import nls from "../nls";
 
 export type OnStart = (questionSize: number) => void | Promise<void>;
 
@@ -70,15 +71,19 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 		quizSummaryElement = (
 			<InfoCard
 				withoutBorder={true}
-				header={`你总共答对了 ${totalCorrect} / ${totalSize} 题 !`}
+				header={nls.get("got-x-out-of-y-questions-right", {
+					totalCorrect: String(totalCorrect),
+					totalSize: String(totalSize)
+				})}
 				content={
 					<>
 						<p className="text-2xl text-gray-200">
-							正确率 {accuracyRate.toFixed(2)}%
+							{nls.get("accuracy-rate")} {accuracyRate.toFixed(2)}%
 						</p>
 						<p className="text-2xl text-gray-200">
-							平均每题用时 {averageQuestionElapsedMinutes} 分{" "}
-							{averageQuestionElapsedSeconds} 秒
+							{nls.get("per-question-spent")} {averageQuestionElapsedMinutes}{" "}
+							{nls.get("minutes")} {averageQuestionElapsedSeconds}{" "}
+							{nls.get("seconds")}
 						</p>
 					</>
 				}
@@ -101,7 +106,7 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 						>
 							{questionSizes.map(size => (
 								<option key={`question-size-${size}`} value={size}>
-									{size} 题
+									{size} {nls.get("question-unit")}
 								</option>
 							))}
 						</select>
@@ -109,14 +114,14 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 							className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 font-bold !text-3xl"
 							onClick={async () => await onStart(questionSize)}
 						>
-							重新开始
+							{nls.get("start-quiz")}
 						</button>
 					</div>
 				}
 			/>
 			{quizSummary && (
 				<Accordion
-					header="成绩总结"
+					header={nls.get("quiz-summary")}
 					bgColor={accuracyRateColor(accuracyRate)}
 					content={quizSummaryElement}
 					last={quizReports.length === 0}
@@ -124,7 +129,7 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 			)}
 			{quizReports.length > 0 && (
 				<Accordion
-					header="历史成绩"
+					header={nls.get("quiz-history")}
 					last={true}
 					onOpen={open => setOpenHistory(open)}
 				/>

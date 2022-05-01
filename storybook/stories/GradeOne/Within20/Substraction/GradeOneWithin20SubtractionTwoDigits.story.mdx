@@ -1,10 +1,13 @@
-import { Canvas, Meta } from "@storybook/addon-docs";
+import { Canvas, Meta, Title } from "@storybook/addon-docs";
 import { defaultDocParams } from "../../../../lib/utils";
 
 import QuizContainer from "../../../../components/QuizContainer";
 import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import Subtraction from "../../../../equation/Subtraction";
-const testName = "一年级/20内/减法/二个数字";
+import nls from "../../../../nls";
+const testName = `${nls.get("grade-one")}/${nls.get("within-20")}/${nls.get(
+	"subtraction"
+)}/${nls.get("two-digits")}`;
 const questionGenerator = new QuestionGenerator({
 	name: testName,
 	maxNum: 20,
@@ -14,7 +17,7 @@ const questionGenerator = new QuestionGenerator({
 
 <Meta title={testName} parameters={defaultDocParams()} />
 
-## 一年级 - 20 内 - 减法 - 二个数字
+<Title>{testName.replaceAll("/", " - ")}</Title>
 
 <Canvas className="custom-docs-story">
 	<QuizContainer questionGenerator={questionGenerator} />

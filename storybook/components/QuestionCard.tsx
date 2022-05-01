@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { clearInputPressedMilliThreshold, Question } from "../lib/types";
 import { CheckCircle, Exclamation, XCircle } from "./Icons";
 import Tooltip from "./Tooltip";
+import nls from "../nls";
 
 type Props = {
 	question: Question;
@@ -37,7 +38,7 @@ const QuestionCard: FC<Props> = ({ question, disabled }) => {
 				mode="click"
 			>
 				<div className="bg-gray-600 py-2 px-3 text-2xl font-semibold text-white rounded-lg">
-					这题曾答错
+					{nls.get("got-question-wrong-before")}
 				</div>
 			</Tooltip>
 		);
@@ -60,28 +61,21 @@ const QuestionCard: FC<Props> = ({ question, disabled }) => {
 					type="number"
 					disabled={disabled}
 					onKeyDown={e => {
-						if (
-							e.key !== "Enter" ||
-							!(question.next?.inputElement instanceof HTMLInputElement)
-						) {
-							return;
-						}
+						if (e.key !== "Enter") return;
 
 						if (!keyDownStartTime) {
 							setKeyDownStartTime(performance.now());
 						}
 					}}
 					onKeyUp={e => {
-						if (
-							e.key !== "Enter" ||
-							!(question.next?.inputElement instanceof HTMLInputElement)
-						) {
-							return;
-						}
+						if (e.key !== "Enter") return;
+
 						const pressedMilli = performance.now() - keyDownStartTime;
 						if (pressedMilli > clearInputPressedMilliThreshold) {
 							question.inputElement.value = "";
-						} else {
+						} else if (
+							question.next?.inputElement instanceof HTMLInputElement
+						) {
 							question.next.inputElement.scrollIntoView({
 								block: "center",
 								inline: "nearest"

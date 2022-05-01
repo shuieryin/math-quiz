@@ -1,4 +1,5 @@
 import { QuizReport } from "./types";
+import nls from "../nls";
 
 export const defaultDocParams = () => ({
 	viewMode: "docs",
@@ -34,11 +35,16 @@ export const milliToMinSec = (milli: number) => {
 
 export const formatDateTime = (milliTime: number, noSec = false) => {
 	const date = new Date(milliTime);
-	return `${date.getFullYear()}年${
-		date.getMonth() + 1
-	}月${date.getDate()}日 ${date.getHours()}时${date.getMinutes()}分${
-		noSec ? "" : `${date.getSeconds()}秒`
-	}`;
+	const nlsObj = {
+		year: String(date.getFullYear()),
+		month: nls.get("short-months")[date.getMonth()],
+		day: String(date.getDate()),
+		hour: String(date.getHours()),
+		minute: String(date.getMinutes()),
+		second: String(date.getSeconds())
+	};
+
+	return nls.get(noSec ? "quiz-time-nosec" : "quiz-time", nlsObj);
 };
 
 export const quizReportAccuracyRate = ({
