@@ -16,7 +16,7 @@ class Nls {
 			}
 		}
 		if (!this.lang) {
-			this.lang = "zh";
+			this.lang = "en";
 		}
 	}
 
