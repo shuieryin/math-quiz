@@ -25,6 +25,16 @@ const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 	} = useQuiz(questionGenerator);
 
 	useEffect(() => {
+		// strangely a fixed height is generated only in Firefox, so unset it to fix the display issue
+		const containerElement = document.getElementById(
+			"innerZoomElementWrapper"
+		)?.parentNode;
+		if (containerElement instanceof HTMLDivElement) {
+			containerElement.style.height = "unset";
+		}
+	}, []);
+
+	useEffect(() => {
 		const question: Question = questions[0];
 		if (question?.inputElement instanceof HTMLInputElement) {
 			question.inputElement.focus();
