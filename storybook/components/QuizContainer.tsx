@@ -26,9 +26,9 @@ const QuizContainer: FC<Props> = ({ questionGenerator }) => {
 
 	useEffect(() => {
 		// strangely a fixed height is generated only in Firefox, so unset it to fix the display issue
-		const containerElement = document.getElementById(
+		const containerElement = document.getElementsByClassName(
 			"innerZoomElementWrapper"
-		)?.parentNode;
+		)[0]?.parentNode;
 		if (containerElement instanceof HTMLDivElement) {
 			containerElement.style.height = "unset";
 		}
