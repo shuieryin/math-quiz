@@ -30,4 +30,6 @@ export type LangPack = { [key in NlsKey]?: string };
 export type LangPacks = {
 	[lang in Lang]?: LangPack;
 };
-export type NlsReplacements = { [key: string]: string };
+export type NlsReplacements = {
+	[key: string]: string | ((lang: Lang) => string);
+};

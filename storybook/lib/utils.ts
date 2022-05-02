@@ -1,5 +1,6 @@
 import { QuizReport } from "./types";
 import nls from "../nls";
+import { NlsReplacements } from "../nls/types";
 
 export const defaultDocParams = () => ({
 	viewMode: "docs",
@@ -35,16 +36,24 @@ export const milliToMinSec = (milli: number) => {
 
 export const formatDateTime = (milliTime: number, noSec = false) => {
 	const date = new Date(milliTime);
-	const nlsObj = {
+	const nlsReplacements: NlsReplacements = {
 		year: String(date.getFullYear()),
 		month: nls.get("short-months")[date.getMonth()],
-		day: String(date.getDate()),
-		hour: String(date.getHours()),
-		minute: String(date.getMinutes()),
-		second: String(date.getSeconds())
+		day: lang => {
+			let dayStr = String(date.getDate());
+			switch (lang) {
+				case "en":
+					dayStr = dayStr.padStart(2, "0");
+					break;
+			}
+			return dayStr;
+		},
+		hour: String(date.getHours()).padStart(2, "0"),
+		minute: String(date.getMinutes()).padStart(2, "0"),
+		second: String(date.getSeconds()).padStart(2, "0")
 	};
 
-	return nls.get(noSec ? "quiz-time-nosec" : "quiz-time", nlsObj);
+	return nls.get(noSec ? "quiz-time-nosec" : "quiz-time", nlsReplacements);
 };
 
 export const quizReportAccuracyRate = ({

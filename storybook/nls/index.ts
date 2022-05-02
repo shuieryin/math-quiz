@@ -26,8 +26,14 @@ class Nls {
 		let content = this.getLangPack()[targetKey];
 		if (content && replacements instanceof Object) {
 			for (const replacementKey in replacements) {
-				const replacementValue = replacements[replacementKey];
-				content = content.replaceAll(`\${${replacementKey}}`, replacementValue);
+				const replacement = replacements[replacementKey];
+				let replaceValue;
+				if (replacement instanceof Function) {
+					replaceValue = replacement(this.lang);
+				} else {
+					replaceValue = replacement;
+				}
+				content = content.replaceAll(`\${${replacementKey}}`, replaceValue);
 			}
 		}
 		return content;
