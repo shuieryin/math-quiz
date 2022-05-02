@@ -51,7 +51,7 @@ export const ArrowDown = () => (
 
 export const Exclamation = (className?: string) => (
 	<svg
-		className={`${className}`}
+		className={className}
 		fill="none"
 		stroke="currentColor"
 		viewBox="0 0 24 24"
@@ -62,13 +62,13 @@ export const Exclamation = (className?: string) => (
 			strokeLinejoin="round"
 			strokeWidth="2"
 			d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-		></path>
+		/>
 	</svg>
 );
 
 export const CheckCircle = (className?: string) => (
 	<svg
-		className={`${className}`}
+		className={className}
 		fill="none"
 		stroke="currentColor"
 		viewBox="0 0 24 24"
@@ -79,13 +79,13 @@ export const CheckCircle = (className?: string) => (
 			strokeLinejoin="round"
 			strokeWidth="2"
 			d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-		></path>
+		/>
 	</svg>
 );
 
 export const XCircle = (className?: string) => (
 	<svg
-		className={`${className}`}
+		className={className}
 		fill="none"
 		stroke="currentColor"
 		viewBox="0 0 24 24"
@@ -96,6 +96,43 @@ export const XCircle = (className?: string) => (
 			strokeLinejoin="round"
 			strokeWidth="2"
 			d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-		></path>
+		/>
+	</svg>
+);
+
+export const Backspace = (className?: string) => (
+	<svg
+		className={className}
+		data-darkreader-inline-stroke=""
+		fill="none"
+		stroke="currentColor"
+		viewBox="0 0 24 24"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<path
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth="2"
+			d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z"
+		/>
+	</svg>
+);
+
+export const Enter = (className?: string) => (
+	<svg
+		className={className}
+		style={{ transform: "rotate(180deg) scaleX(-1)" }}
+		data-darkreader-inline-stroke=""
+		fill="none"
+		stroke="currentColor"
+		viewBox="0 0 24 24"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<path
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth="2"
+			d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
+		/>
 	</svg>
 );

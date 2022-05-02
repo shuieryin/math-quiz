@@ -3,22 +3,27 @@ import { DisplayType } from "../lib/types";
 
 type Props = {
 	open?: boolean;
+	isTriggerFixed?: boolean;
 	triggerPosition?: string;
 	position?: string;
 	trigger: DisplayType;
 	children: DisplayType;
 	mode?: "hover" | "click";
+	bodyCss?: string;
 };
 
 const Tooltip: FC<Props> = ({
 	open,
+	isTriggerFixed,
 	triggerPosition,
 	position,
 	trigger,
 	children,
-	mode
+	mode,
+	bodyCss
 }) => {
 	const buttonRef = useRef<HTMLButtonElement>();
+	const containerRef = useRef<HTMLDivElement>();
 	const [isOpen, setIsOpen] = useState<boolean>(open);
 	let triggerEvents;
 
@@ -43,9 +48,12 @@ const Tooltip: FC<Props> = ({
 		if (mode === "click") {
 			const hideTooltip = (e?: MouseEvent) => {
 				if (
-					buttonRef.current instanceof HTMLElement &&
+					buttonRef.current instanceof HTMLButtonElement &&
+					containerRef.current instanceof HTMLDivElement &&
 					e?.target !== buttonRef.current &&
-					!buttonRef.current.contains(e?.target as HTMLElement)
+					e?.target !== containerRef.current &&
+					!buttonRef.current.contains(e?.target as HTMLButtonElement) &&
+					!containerRef.current.contains(e?.target as HTMLDivElement)
 				) {
 					setIsOpen(false);
 				}
@@ -60,15 +68,18 @@ const Tooltip: FC<Props> = ({
 		<>
 			<button
 				ref={buttonRef}
-				className={`absolute h-8 w-8 ${triggerPosition}`}
+				className={`h-8 w-8${
+					isTriggerFixed ? " absolute" : ""
+				} ${triggerPosition}`}
 				{...triggerEvents}
 			>
 				{trigger}
 			</button>
 			<div
-				className={`inline-block absolute z-10 shadow-sm transition-opacity duration-300 ${position} ${
+				ref={containerRef}
+				className={`inline-block absolute z-10 shadow-lg transition-opacity duration-300 ${position} ${
 					isOpen ? "visible opacity-100" : "invisible opacity-0"
-				}`}
+				} ${bodyCss}`}
 			>
 				{children}
 			</div>
@@ -78,8 +89,7 @@ const Tooltip: FC<Props> = ({
 
 Tooltip.defaultProps = {
 	open: false,
-	triggerPosition: "-left-4 -top-4",
-	position: "-top-4 left-6",
+	isTriggerFixed: true,
 	mode: "hover"
 };
 
