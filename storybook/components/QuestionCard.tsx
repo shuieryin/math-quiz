@@ -49,7 +49,6 @@ const QuestionCard: FC<Props> = ({ question, disabled }) => {
 				trigger={Exclamation("text-yellow-400 bg-gray-400 rounded-full")}
 				triggerPosition="-left-4 -top-4"
 				position="-top-6 left-6"
-				bodyCss="w-64"
 				mode="click"
 			>
 				<div className="bg-gray-600 py-2 px-3 text-2xl font-semibold text-white rounded-lg">

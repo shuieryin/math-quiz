@@ -41,7 +41,7 @@ const buttonConfigs: ButtonConfig[] = [
 	},
 	{
 		name: "Backspace",
-		content: Backspace("bg-zinc-600"),
+		content: Backspace(),
 		type: "function"
 	},
 	{
@@ -74,7 +74,7 @@ const buttonConfigs: ButtonConfig[] = [
 	},
 	{
 		name: "Enter",
-		content: Enter("bg-zinc-600"),
+		content: Enter(),
 		type: "function"
 	}
 ];
@@ -89,7 +89,7 @@ const Numpad: FC<Props> = ({ onClick }) => {
 					<div
 						tabIndex={-1}
 						key={`numpad_${content}`}
-						className="text-4xl text-white font-semibold bg-zinc-600 rounded-lg flex items-center justify-center cursor-pointer"
+						className="text-4xl text-white font-semibold bg-zinc-700 rounded-lg flex items-center justify-center cursor-pointer"
 						onClick={() => onClick(content as OnClickValue)}
 					>
 						{content}
@@ -102,7 +102,7 @@ const Numpad: FC<Props> = ({ onClick }) => {
 					<div
 						tabIndex={-1}
 						key={`numpad_${name}`}
-						className="text-4xl text-white font-semibold bg-zinc-600 rounded-lg p-3 cursor-pointer"
+						className="text-4xl text-white font-semibold bg-zinc-700 rounded-lg p-3 cursor-pointer"
 						onClick={() => onClick(name)}
 					>
 						{content}
@@ -113,7 +113,7 @@ const Numpad: FC<Props> = ({ onClick }) => {
 	}
 
 	return (
-		<div className="w-72 h-56 bg-gray-200 rounded-lg grid grid-cols-4 grid-rows-3 gap-2 p-2">
+		<div className="w-72 h-56 bg-gray-500 rounded-lg grid grid-cols-4 grid-rows-3 gap-2 p-2">
 			{buttons}
 		</div>
 	);
