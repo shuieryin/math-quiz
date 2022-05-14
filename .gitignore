@@ -8,3 +8,4 @@ misc/
 .yarnrc
 *.log
 storybook-static/
+yarn.lock
