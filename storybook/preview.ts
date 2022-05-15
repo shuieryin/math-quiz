@@ -26,6 +26,11 @@ const equationOrder = [
 	digitOrder
 ];
 
+const equationGrade2Order = [
+	nls.get("multiplication"),
+	digitOrder
+];
+
 export const parameters = {
 	darkMode: {
 		current: "dark",
@@ -45,6 +50,11 @@ export const parameters = {
 					equationOrder,
 					nls.get("within-100"),
 					equationOrder
+				],
+				nls.get("grade-two"),
+				[
+					nls.get("within-10"),
+					equationGrade2Order
 				]
 			]
 		}
