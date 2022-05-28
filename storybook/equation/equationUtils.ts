@@ -1,6 +1,6 @@
 import { randBool, randInt } from "../lib/utils";
 
-export const genSequence = (
+export const genAddSubSequence = (
 	digitSize: number,
 	minNum: number,
 	maxNum: number,
@@ -24,7 +24,7 @@ export const genSequence = (
 	return digits;
 };
 
-export const genVariants = (
+export const genAddSubVariants = (
 	digitSize: number,
 	minNum: number,
 	maxNum: number,
@@ -64,4 +64,20 @@ export const genVariants = (
 	}
 	digits.unshift(answer);
 	return { digits, questionContent };
+};
+
+export const genMulDivSequence = (
+	digitSize: number,
+	minNum: number,
+	maxNum: number
+) => {
+	let answer = 1;
+	const digits = [];
+	for (let i = 0; i < digitSize; i++) {
+		const curDigit = randInt(minNum, maxNum);
+		answer *= curDigit;
+		digits.push(curDigit);
+	}
+	digits.push(answer);
+	return digits;
 };

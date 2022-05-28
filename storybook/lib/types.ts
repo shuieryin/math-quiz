@@ -30,6 +30,13 @@ export class Equation {
 	constructor(maxNum: number, digitSize = 2) {
 		this.maxNum = maxNum;
 		this.digitSize = digitSize;
+		if (digitSize === 2 && maxNum <= 20) {
+			this.maxQuestionSize = 80;
+		} else if (digitSize === 3 && maxNum <= 100) {
+			this.maxQuestionSize = 300;
+		} else {
+			this.maxQuestionSize = 500;
+		}
 	}
 }
 

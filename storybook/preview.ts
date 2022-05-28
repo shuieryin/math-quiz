@@ -23,6 +23,10 @@ const equationOrder = [
 	nls.get("subtraction"),
 	digitOrder,
 	nls.get("addition-and-subtraction"),
+	digitOrder,
+	nls.get("multiplication"),
+	digitOrder,
+	nls.get("division"),
 	digitOrder
 ];
 
@@ -45,7 +49,9 @@ export const parameters = {
 					equationOrder,
 					nls.get("within-100"),
 					equationOrder
-				]
+				],
+				nls.get("grade-two"),
+				[nls.get("within-10"), equationOrder]
 			]
 		}
 	}

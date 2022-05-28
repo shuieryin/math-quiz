@@ -1,23 +1,22 @@
 import { Equation, EquationResult } from "../lib/types";
-import { genAddSubSequence } from "./equationUtils";
+import { genMulDivSequence } from "./equationUtils";
 
-class Addition extends Equation {
+class Multiplication extends Equation {
 	minNum = 2;
-	step = 3;
 
 	constructor(maxNum: number, digitSize: number) {
 		super(maxNum, digitSize);
 	}
 
 	gen = (): EquationResult => {
-		const [answer, ...digits] = genAddSubSequence(
+		const [answer, ...digits] = genMulDivSequence(
 			this.digitSize,
 			this.minNum,
-			this.maxNum,
-			this.step
+			this.maxNum
 		);
+		digits.reverse();
 
-		const questionContent = digits.join(" + ");
+		const questionContent = digits.join(" ÷ ");
 
 		return {
 			questionContent,
@@ -26,4 +25,4 @@ class Addition extends Equation {
 	};
 }
 
-export default Addition;
+export default Multiplication;

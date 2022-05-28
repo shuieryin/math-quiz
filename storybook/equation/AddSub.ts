@@ -1,5 +1,5 @@
 import { Equation, EquationResult } from "../lib/types";
-import { genVariants } from "./equationUtils";
+import { genAddSubVariants } from "./equationUtils";
 
 class Subtraction extends Equation {
 	minNum = 2;
@@ -19,7 +19,7 @@ class Subtraction extends Equation {
 		const {
 			digits: [answer],
 			questionContent
-		} = genVariants(this.digitSize, this.minNum, this.maxNum, this.step);
+		} = genAddSubVariants(this.digitSize, this.minNum, this.maxNum, this.step);
 
 		return {
 			questionContent,
