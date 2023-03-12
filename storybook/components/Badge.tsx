@@ -1,5 +1,4 @@
-import React, { FC } from "react";
-import { DisplayType } from "../lib/types";
+import React, { FunctionComponent, ReactNode } from "react";
 
 type Props = {
 	color?:
@@ -13,10 +12,10 @@ type Props = {
 		| "purple"
 		| "pink";
 	textSize?: string;
-	children: DisplayType;
+	children: ReactNode;
 };
 
-const Badge: FC<Props> = ({ color, textSize, children }) => {
+const Badge: FunctionComponent<Props> = ({ color, textSize, children }) => {
 	let colorClassName, textColorClassName;
 	switch (color) {
 		case "dark":
