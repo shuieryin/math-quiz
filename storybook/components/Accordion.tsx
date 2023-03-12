@@ -1,19 +1,23 @@
-import React, { FC, useEffect, useState } from "react";
-import { DisplayType } from "../lib/types";
+import React, {
+	FunctionComponent,
+	ReactNode,
+	useEffect,
+	useState
+} from "react";
 import { ArrowDown, ArrowUp } from "./Icons";
 
 type Props = {
 	first?: boolean;
 	last?: boolean;
-	header?: DisplayType;
-	content?: DisplayType;
+	header?: ReactNode;
+	content?: ReactNode;
 	open?: boolean;
 	onOpen?: (open: boolean) => void | Promise<void>;
 	bgColor?: string;
 	disabled?: boolean;
 };
 
-const Accordion: FC<Props> = ({
+const Accordion: FunctionComponent<Props> = ({
 	first,
 	last,
 	header,

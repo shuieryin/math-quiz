@@ -1,18 +1,23 @@
-import React, { FC, useState, useEffect, useRef } from "react";
-import { DisplayType } from "../lib/types";
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	ReactNode,
+	FunctionComponent
+} from "react";
 
 type Props = {
 	open?: boolean;
 	isTriggerFixed?: boolean;
 	triggerPosition?: string;
 	position?: string;
-	trigger: DisplayType;
-	children: DisplayType;
+	trigger: ReactNode;
+	children: ReactNode;
 	mode?: "hover" | "click";
 	bodyCss?: string;
 };
 
-const Tooltip: FC<Props> = ({
+const Tooltip: FunctionComponent<Props> = ({
 	open,
 	isTriggerFixed,
 	triggerPosition,

@@ -1,7 +1,6 @@
 import "!style-loader!css-loader!postcss-loader!tailwindcss/tailwind.css";
 import "!style-loader!css-loader!less-loader!./assets/global.less";
-import { create, themes } from "@storybook/theming";
-import { ThemeVars } from "@storybook/theming/dist/ts3.9/types";
+import { create, themes, ThemeVars } from "@storybook/theming";
 import nls from "./nls";
 
 const themeConfig: ThemeVars = {

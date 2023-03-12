@@ -1,5 +1,3 @@
-import { ReactElement } from "react";
-
 export type Question = {
 	quizName?: string;
 	questionContent: string;
@@ -61,14 +59,6 @@ export type StoreConfig = {
 };
 
 export const incorrectQuestionPenalty = 3;
-
-export type DisplayTypeAtom =
-	| string
-	| number
-	| boolean
-	| Element
-	| ReactElement;
-export type DisplayType = DisplayTypeAtom | DisplayTypeAtom[];
 
 export const clearInputPressedMilliThreshold = 300;
 

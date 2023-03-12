@@ -1,16 +1,15 @@
-import React, { FC, isValidElement } from "react";
-import { DisplayType } from "../lib/types";
+import React, { FunctionComponent, isValidElement, ReactNode } from "react";
 
 type Props = {
-	header?: DisplayType;
-	content?: DisplayType;
+	header?: ReactNode;
+	content?: ReactNode;
 	bgColor?: string;
 	hoverBgColor?: string;
 	borderColor?: string;
 	withoutBorder?: boolean;
 };
 
-const InfoCard: FC<Props> = ({
+const InfoCard: FunctionComponent<Props> = ({
 	header,
 	content,
 	bgColor,
