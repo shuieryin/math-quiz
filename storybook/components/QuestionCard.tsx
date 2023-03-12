@@ -72,7 +72,7 @@ const QuestionCard: FC<Props> = ({ question, disabled }) => {
 		question.next.inputElement.focus();
 	};
 
-	const inputClassName = `flex-1 w-20 h-10 rounded-md shadow-lg ml-5 text-4xl text-center font-semibold focus:bg-yellow-100 focus:outline-none p-0 ${inputBoxBgColor}`;
+	const inputClassName = `flex-1 answer-box-width h-10 rounded-md shadow-lg ml-5 text-4xl text-center font-semibold focus:bg-yellow-100 focus:outline-none p-0 ${inputBoxBgColor}`;
 
 	return (
 		<div className="relative p-4 pr-6 rounded-md shadow-lg bg-gray-400 w-fit">
