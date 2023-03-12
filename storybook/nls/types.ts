@@ -23,6 +23,7 @@ export type NlsKey =
 	| "division"
 	| "subtraction"
 	| "addition-and-subtraction"
+	| "one-digit"
 	| "two-digits"
 	| "three-digits"
 	| "math-quiz"

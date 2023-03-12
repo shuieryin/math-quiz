@@ -2,7 +2,8 @@ import { Equation, Question, Questions } from "./types";
 import { shuffle } from "./utils";
 
 const defaultQuestionSizes = [
-	10, 20, 30, 50, 60, 80, 100, 120, 150, 200, 500, 750, 1000, 1500, 2000, 3000
+	5, 10, 20, 30, 50, 60, 80, 100, 120, 150, 200, 500, 750, 1000, 1500, 2000,
+	3000
 ];
 
 class QuestionGenerator {
