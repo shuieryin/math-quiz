@@ -7,7 +7,7 @@ import {
 	milliToMinSec,
 	quizReportColor
 } from "../lib/utils";
-import { forEachRecord, initDb } from "../lib/DbHelper";
+import { forEachRecord, initDb, updateQuizId } from "../lib/DbHelper";
 import Accordion from "./Accordion";
 import QuizReportInfoCard from "./QuizReportInfoCard";
 import nls from "../nls";
@@ -34,6 +34,7 @@ const QuizControl: FunctionComponent<Props> = ({
 	useEffect(() => {
 		(async () => {
 			await initDb();
+			await updateQuizId(questionGenerator);
 			const quizReports: QuizReport[] = [];
 			let totalSize = 0;
 			let totalCorrect = 0;

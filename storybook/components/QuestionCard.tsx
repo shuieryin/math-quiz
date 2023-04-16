@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { clearInputPressedMilliThreshold, Question } from "../lib/types";
 import { CheckCircle, Exclamation, XCircle } from "./Icons";
 import Tooltip from "./Tooltip";
@@ -21,7 +21,7 @@ const allowedKeys = {
 	Shift: true
 };
 
-const QuestionCard: FC<Props> = ({ question, disabled }) => {
+const QuestionCard: FunctionComponent<Props> = ({ question, disabled }) => {
 	const [isShowNumpad, setIsShowNumpad] = useState<boolean>(false);
 	const { correct, questionContent, isReuse } = question;
 	const [keyDownStartTime, setKeyDownStartTime] = useState<number>();

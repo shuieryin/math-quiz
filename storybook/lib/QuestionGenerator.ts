@@ -1,10 +1,4 @@
-import {
-	Equation,
-	IncorrectQuestion,
-	Question,
-	Questions,
-	QuizReport
-} from "./types";
+import { Equation, Question, Questions } from "./types";
 import { shuffle } from "./utils";
 import nls from "../nls";
 import {
@@ -14,7 +8,6 @@ import {
 	NlsMethodKey,
 	NlsWithinKey
 } from "../nls/types";
-import { addRecord, forEachRecord } from "./DbHelper";
 
 const defaultQuestionSizes = [
 	5, 10, 20, 30, 50, 60, 80, 100, 120, 150, 200, 500, 750, 1000, 1500, 2000,
@@ -41,33 +34,6 @@ class QuestionGenerator {
 	}) {
 		this.id = id;
 		this.equation = new EquationClass(maxNum, digitSize);
-
-		(async () => {
-			const incorrectQuestionsToBeUpdated = [];
-			await forEachRecord<IncorrectQuestion>(
-				"incorrectQuestion",
-				async question => {
-					if (question.quizName === this.getName()) {
-						question.quizName = this.id;
-						incorrectQuestionsToBeUpdated.push(question);
-					}
-				}
-			);
-			for (const incorrectQuestionToBeUpdated of incorrectQuestionsToBeUpdated) {
-				await addRecord("incorrectQuestion", incorrectQuestionToBeUpdated);
-			}
-
-			const quizReportsToBeUpdated = [];
-			await forEachRecord<QuizReport>("quizReport", async quizReport => {
-				if (quizReport.quizName === this.getName()) {
-					quizReport.quizName = this.id;
-					quizReportsToBeUpdated.push(quizReport);
-				}
-			});
-			for (const quizReportToBeUpdated of quizReportsToBeUpdated) {
-				await addRecord("quizReport", quizReportToBeUpdated);
-			}
-		})();
 	}
 
 	questionSizes = () =>
