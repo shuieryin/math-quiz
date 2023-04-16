@@ -1,5 +1,5 @@
 import InfoCard from "./InfoCard";
-import React, { FC } from "react";
+import React, { FunctionComponent } from "react";
 import { QuizReport } from "../lib/types";
 import { formatDateTime, milliToMinSec } from "../lib/utils";
 import Badge from "./Badge";
@@ -11,7 +11,7 @@ type Props = {
 	withoutBorder?: boolean;
 };
 
-const QuizReportInfoCard: FC<Props> = ({
+const QuizReportInfoCard: FunctionComponent<Props> = ({
 	quizReport: { correctCount, totalCount, elapsedMilli, createTime },
 	bgColor,
 	withoutBorder

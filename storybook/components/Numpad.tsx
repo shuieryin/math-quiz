@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Backspace, Enter } from "./Icons";
 
 type OnClickFnName = "Enter" | "Backspace";
@@ -79,7 +79,7 @@ const buttonConfigs: ButtonConfig[] = [
 	}
 ];
 
-const Numpad: FC<Props> = ({ onClick }) => {
+const Numpad: FunctionComponent<Props> = ({ onClick }) => {
 	const buttons = [];
 	for (const buttonConfig of buttonConfigs) {
 		const { type, content } = buttonConfig;

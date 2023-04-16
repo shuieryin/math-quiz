@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import "./quiz-container.less";
 import { Question } from "../lib/types";
 import QuestionGenerator from "../lib/QuestionGenerator";
@@ -14,7 +14,7 @@ type Props = {
 	questionGenerator: QuestionGenerator;
 };
 
-const QuizContainer: FC<Props> = ({ questionGenerator }) => {
+const QuizContainer: FunctionComponent<Props> = ({ questionGenerator }) => {
 	const {
 		startQuiz,
 		handleSubmit,

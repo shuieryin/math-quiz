@@ -1,4 +1,11 @@
-import { StoreConfig, StoreName, StoreRecord } from "./types";
+import {
+	IncorrectQuestion,
+	QuizReport,
+	StoreConfig,
+	StoreName,
+	StoreRecord
+} from "./types";
+import QuestionGenerator from "./QuestionGenerator";
 
 if (!window.indexedDB) {
 	window["indexedDB"] =
@@ -89,6 +96,33 @@ export const initDb = () => {
 			resolve();
 		};
 	});
+};
+
+export const updateQuizId = async (questionGenerator: QuestionGenerator) => {
+	const incorrectQuestionsToBeUpdated = [];
+	await forEachRecord<IncorrectQuestion>(
+		"incorrectQuestion",
+		async question => {
+			if (question.quizName === questionGenerator.getName()) {
+				question.quizName = questionGenerator.getId();
+				incorrectQuestionsToBeUpdated.push(question);
+			}
+		}
+	);
+	for (const incorrectQuestionToBeUpdated of incorrectQuestionsToBeUpdated) {
+		await addRecord("incorrectQuestion", incorrectQuestionToBeUpdated);
+	}
+
+	const quizReportsToBeUpdated = [];
+	await forEachRecord<QuizReport>("quizReport", async quizReport => {
+		if (quizReport.quizName === questionGenerator.getName()) {
+			quizReport.quizName = questionGenerator.getId();
+			quizReportsToBeUpdated.push(quizReport);
+		}
+	});
+	for (const quizReportToBeUpdated of quizReportsToBeUpdated) {
+		await addRecord("quizReport", quizReportToBeUpdated);
+	}
 };
 
 export const addRecord = (storeName: StoreName, record: StoreRecord) => {
