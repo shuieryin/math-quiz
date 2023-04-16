@@ -1,28 +1,73 @@
-import { Equation, Question, Questions } from "./types";
+import {
+	Equation,
+	IncorrectQuestion,
+	Question,
+	Questions,
+	QuizReport
+} from "./types";
 import { shuffle } from "./utils";
+import nls from "../nls";
+import {
+	NlsDigitKey,
+	NlsGradeKey,
+	NlsKey,
+	NlsMethodKey,
+	NlsWithinKey
+} from "../nls/types";
+import { addRecord, forEachRecord } from "./DbHelper";
 
 const defaultQuestionSizes = [
 	5, 10, 20, 30, 50, 60, 80, 100, 120, 150, 200, 500, 750, 1000, 1500, 2000,
 	3000
 ];
 
+export type QuizId =
+	`${NlsGradeKey}_${NlsWithinKey}_${NlsMethodKey}_${NlsDigitKey}`;
+
 class QuestionGenerator {
-	name: string;
+	private readonly id: QuizId;
 	equation: Equation;
 
 	constructor({
-		name,
+		id,
 		maxNum,
 		digitSize,
 		EquationClass
 	}: {
-		name: string;
+		id: QuizId;
 		maxNum: number;
 		digitSize: number;
 		EquationClass: typeof Equation;
 	}) {
-		this.name = name;
+		this.id = id;
 		this.equation = new EquationClass(maxNum, digitSize);
+
+		(async () => {
+			const incorrectQuestionsToBeUpdated = [];
+			await forEachRecord<IncorrectQuestion>(
+				"incorrectQuestion",
+				async question => {
+					if (question.quizName === this.getName()) {
+						question.quizName = this.id;
+						incorrectQuestionsToBeUpdated.push(question);
+					}
+				}
+			);
+			for (const incorrectQuestionToBeUpdated of incorrectQuestionsToBeUpdated) {
+				await addRecord("incorrectQuestion", incorrectQuestionToBeUpdated);
+			}
+
+			const quizReportsToBeUpdated = [];
+			await forEachRecord<QuizReport>("quizReport", async quizReport => {
+				if (quizReport.quizName === this.getName()) {
+					quizReport.quizName = this.id;
+					quizReportsToBeUpdated.push(quizReport);
+				}
+			});
+			for (const quizReportToBeUpdated of quizReportsToBeUpdated) {
+				await addRecord("quizReport", quizReportToBeUpdated);
+			}
+		})();
 	}
 
 	questionSizes = () =>
@@ -55,7 +100,7 @@ class QuestionGenerator {
 					usedQuestions.has(question.questionContent) &&
 					usedCount <= maxUsedCount
 				);
-				question.quizName = this.name;
+				question.quizName = this.getId();
 			}
 
 			if (usedCount > maxUsedCount) {
@@ -81,6 +126,21 @@ class QuestionGenerator {
 
 		return questions;
 	};
+
+	getId() {
+		return this.id;
+	}
+
+	getName() {
+		return this.id
+			.split("_")
+			.map(nlsKey => nls.get(nlsKey as NlsKey))
+			.join("/");
+	}
+
+	getTitle() {
+		return this.getName().replaceAll("/", " - ");
+	}
 }
 
 export default QuestionGenerator;

@@ -4,20 +4,16 @@ import { defaultDocParams } from "../../../../lib/utils";
 import QuizContainer from "../../../../components/QuizContainer";
 import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import Subtraction from "../../../../equation/Subtraction";
-import nls from "../../../../nls";
-const testName = `${nls.get("grade-one")}/${nls.get("within-20")}/${nls.get(
-	"subtraction"
-)}/${nls.get("three-digits")}`;
 const questionGenerator = new QuestionGenerator({
-	name: testName,
+	id: "grade-one_within-20_subtraction_three-digits",
 	maxNum: 20,
 	digitSize: 3,
 	EquationClass: Subtraction
 });
 
-<Meta title={testName} parameters={defaultDocParams()} />
+<Meta title={questionGenerator.getName()} parameters={defaultDocParams()} />
 
-<Title>{testName.replaceAll("/", " - ")}</Title>
+<Title>{questionGenerator.getTitle()}</Title>
 
 <Canvas className="custom-docs-story">
 	<QuizContainer questionGenerator={questionGenerator} />
