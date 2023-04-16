@@ -14,7 +14,7 @@ import {
 import QuestionGenerator from "../lib/QuestionGenerator";
 import { OnStart } from "../components/QuizControl";
 
-export default ({ name, genQuestions }: QuestionGenerator) => {
+export default (questionGenerator: QuestionGenerator) => {
 	const [questions, setQuestions] = useState<Questions>([]);
 	const [startTime, setStartTime] = useState(0);
 	const [quizReport, setQuizReport] = useState<QuizReport>();
@@ -30,7 +30,7 @@ export default ({ name, genQuestions }: QuestionGenerator) => {
 				if (!quizName) {
 					incorrectQuestionsNeedRemove.push(questionContent);
 				} else {
-					if (quizName === name) {
+					if (quizName === questionGenerator.getId()) {
 						incorrectQuestionToBeReused.push({
 							questionContent,
 							answer,
@@ -49,7 +49,9 @@ export default ({ name, genQuestions }: QuestionGenerator) => {
 
 		setSubmitted(false);
 		setQuizReport(undefined);
-		setQuestions(() => genQuestions(questionSize, incorrectQuestionToBeReused));
+		setQuestions(() =>
+			questionGenerator.genQuestions(questionSize, incorrectQuestionToBeReused)
+		);
 		setStartTime(new Date().getTime());
 
 		window.scrollTo({ top: 0, behavior: "smooth" });
@@ -106,7 +108,7 @@ export default ({ name, genQuestions }: QuestionGenerator) => {
 		}
 
 		const quizReport: QuizReport = {
-			quizName: name,
+			quizName: questionGenerator.getId(),
 			correctCount,
 			totalCount: questions.length,
 			createTime: Date.now(),

@@ -12,12 +12,6 @@ module.exports = {
 		},
 
 		{
-			test: /.*\/(?!solid)\/.*\.tsx?$/,
-			use: "ts-loader",
-			exclude: /node_modules/
-		},
-
-		{
 			test: /\.jsx?$/,
 			exclude: /node_modules/,
 			use: [

@@ -1,5 +1,14 @@
 export type Lang = "zh" | "en";
 
+export type NlsGradeKey = "grade-one" | "grade-two";
+export type NlsWithinKey = "within-100" | "within-20" | "within-10";
+export type NlsMethodKey =
+	| "addition"
+	| "multiplication"
+	| "division"
+	| "subtraction"
+	| "addition-and-subtraction";
+export type NlsDigitKey = "one-digit" | "two-digits" | "three-digits";
 export type NlsKey =
 	| "got-question-wrong-before"
 	| "submit-answer"
@@ -13,23 +22,14 @@ export type NlsKey =
 	| "got-x-out-of-y-questions-right"
 	| "quiz-summary"
 	| "quiz-history"
-	| "grade-one"
-	| "grade-two"
-	| "within-100"
-	| "within-20"
-	| "within-10"
-	| "addition"
-	| "multiplication"
-	| "division"
-	| "subtraction"
-	| "addition-and-subtraction"
-	| "one-digit"
-	| "two-digits"
-	| "three-digits"
 	| "math-quiz"
 	| "short-months"
 	| "quiz-time"
-	| "quiz-time-nosec";
+	| "quiz-time-nosec"
+	| NlsGradeKey
+	| NlsWithinKey
+	| NlsMethodKey
+	| NlsDigitKey;
 
 export type LangPack = { [key in NlsKey]?: string };
 export type LangPacks = {

@@ -13,7 +13,11 @@ module.exports = {
 		semi: ["error", "always"]
 	},
 	ignorePatterns: ["packages/*/dist/**/*"],
-	extends: ["eslint:recommended", "plugin:prettier/recommended"],
+	extends: [
+		"eslint:recommended",
+		"plugin:prettier/recommended",
+		"plugin:storybook/recommended"
+	],
 	plugins: ["import", "jsx-a11y", "react"],
 	env: {
 		browser: true,

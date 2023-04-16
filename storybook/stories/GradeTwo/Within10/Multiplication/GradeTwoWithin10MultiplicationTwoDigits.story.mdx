@@ -4,20 +4,16 @@ import { defaultDocParams } from "../../../../lib/utils";
 import QuizContainer from "../../../../components/QuizContainer";
 import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import Multiplication from "../../../../equation/Multiplication";
-import nls from "../../../../nls";
-const testName = `${nls.get("grade-two")}/${nls.get("within-10")}/${nls.get(
-	"multiplication"
-)}/${nls.get("two-digits")}`;
 const questionGenerator = new QuestionGenerator({
-	name: testName,
+	id: "grade-two_within-10_multiplication_two-digits",
 	maxNum: 9,
 	digitSize: 2,
 	EquationClass: Multiplication
 });
 
-<Meta title={testName} parameters={defaultDocParams()} />
+<Meta title={questionGenerator.getName()} parameters={defaultDocParams()} />
 
-<Title>{testName.replaceAll("/", " - ")}</Title>
+<Title>{questionGenerator.getTitle()}</Title>
 
 <Canvas className="custom-docs-story">
 	<QuizContainer questionGenerator={questionGenerator} />

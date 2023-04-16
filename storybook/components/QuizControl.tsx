@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import QuestionGenerator from "../lib/QuestionGenerator";
 import { Questions, QuizReport, QuizSummary } from "../lib/types";
 import InfoCard from "./InfoCard";
@@ -20,7 +20,11 @@ type Props = {
 	onStart: OnStart;
 };
 
-const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
+const QuizControl: FunctionComponent<Props> = ({
+	questionGenerator,
+	onStart,
+	questions
+}: Props) => {
 	const questionSizes = questionGenerator.questionSizes();
 	const [questionSize, setQuestionSize] = useState(questionSizes[1]);
 	const [quizSummary, setQuizSummary] = useState<QuizSummary>();
@@ -36,7 +40,7 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 			let totalElapsed = 0;
 			await forEachRecord<QuizReport>("quizReport", quizReport => {
 				const { quizName, totalCount, correctCount, elapsedMilli } = quizReport;
-				if (quizName === questionGenerator.name) {
+				if (quizName === questionGenerator.getId()) {
 					quizReports.push(quizReport);
 					totalSize += totalCount;
 					totalCorrect += correctCount;
@@ -100,7 +104,7 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 				content={
 					<div className="flex flex-row flex-nowrap gap-x-5 items-center">
 						<select
-							className="rounded-md shadow-lg form-select form-select-sm px-2 py-1 text-3xl font-normal text-gray-700 bg-clip-padding bg-no-repeat border border-solid transition ease-in-out m-0 bg-gray-400 hover:bg-gray-500 border-none text-gray-900"
+							className="rounded-md shadow-lg form-select form-select-sm px-2 py-1 text-3xl font-normal bg-clip-padding bg-no-repeat border transition ease-in-out m-0 bg-gray-400 hover:bg-gray-500 border-none text-gray-900"
 							value={questionSize}
 							onChange={e => setQuestionSize(Number(e.target.value))}
 						>
@@ -111,7 +115,7 @@ const QuizControl: FC<Props> = ({ questionGenerator, onStart, questions }) => {
 							))}
 						</select>
 						<button
-							className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 font-bold !text-3xl"
+							className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 rounded-lg px-5 py-2.5 mr-2 font-bold !text-3xl"
 							onClick={async () => await onStart(questionSize)}
 						>
 							{nls.get("start-quiz")}
