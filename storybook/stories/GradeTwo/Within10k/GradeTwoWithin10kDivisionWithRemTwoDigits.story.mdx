@@ -1,0 +1,20 @@
+import { Canvas, Meta, Title } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../lib/utils";
+
+import QuizContainer from "../../../components/QuizContainer";
+import QuestionGenerator from "../../../lib/QuestionGenerator";
+import Division from "../../../equation/Division";
+const questionGenerator = new QuestionGenerator({
+	id: "grade-two_within-10k_division_four-digits",
+	maxNum: 99,
+	digitSize: 2,
+	EquationClass: Division
+});
+
+<Meta title={questionGenerator.getName()} parameters={defaultDocParams()} />
+
+<Title>{questionGenerator.getTitle()}</Title>
+
+<Canvas className="custom-docs-story">
+	<QuizContainer questionGenerator={questionGenerator} />
+</Canvas>

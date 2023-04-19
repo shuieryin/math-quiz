@@ -5,11 +5,7 @@ class Subtraction extends Equation {
 	minNum = 2;
 	step = 2;
 
-	constructor(maxNum: number, digitSize: number) {
-		super(maxNum, digitSize);
-	}
-
-	gen = (): EquationResult => {
+	genQuestion = (): EquationResult => {
 		const digits = genAddSubSequence(
 			this.digitSize,
 			this.minNum,
@@ -20,10 +16,10 @@ class Subtraction extends Equation {
 
 		const questionContent = digits.join(" - ");
 
-		return {
+		return this.genQuestionWithState({
 			questionContent,
 			answer
-		} as EquationResult;
+		});
 	};
 }
 

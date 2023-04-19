@@ -14,8 +14,11 @@ type OnClickValue =
 	| "9"
 	| "0"
 	| OnClickFnName;
+
+export type NumpadOnClick = (value: OnClickValue) => void;
+
 type Props = {
-	onClick?: (value: OnClickValue) => void;
+	onClick?: NumpadOnClick;
 };
 
 type ButtonType = "numeric" | "function";
