@@ -1,29 +1,45 @@
+import { genSingleAnswerQuestion } from "../equation/equationUtils";
+
+export type DivisionRemAnswer = { quotient: number; remainder: number };
+export type Answer = number | DivisionRemAnswer;
+
 export type Question = {
 	quizName?: string;
 	questionContent: string;
-	answer: number;
-	inputElement?: HTMLInputElement;
+	answer: Answer;
+	inputAnswer?: Answer;
 	correct?: boolean;
 	prev?: Question;
 	next?: Question;
+	focusInput?: () => void;
 	isReuse?: boolean;
+	handleSubmit: <InputPayload>(InputPayload) => boolean;
+	genQuestionCard: (submitted: boolean) => JSX.Element;
+	displayInputAnswer: () => JSX.Element;
 };
-
 export type Questions = Question[];
 
 export type IncorrectQuestion = Required<
-	Pick<Question, "questionContent" | "answer">
-> & { count?: number; quizName: string };
+	Pick<Question, "questionContent" | "answer" | "quizName">
+> & { count?: number };
 
-export type EquationResult = Required<
+export type DoGenParams = Required<
 	Pick<Question, "questionContent" | "answer">
->;
+> &
+	Pick<Question, "isReuse">;
+
+export type EquationResult = DoGenParams &
+	Required<
+		Pick<Question, "handleSubmit" | "genQuestionCard" | "displayInputAnswer">
+	> &
+	Pick<Question, "inputAnswer">;
 
 export class Equation {
 	maxNum: number;
 	digitSize: number;
 	maxQuestionSize: number;
-	gen: () => EquationResult;
+	genQuestion: () => EquationResult;
+	genQuestionWithState = genSingleAnswerQuestion;
 
 	constructor(maxNum: number, digitSize = 2) {
 		this.maxNum = maxNum;
@@ -67,3 +83,7 @@ export type QuizSummary = {
 	totalSize: number;
 	perQuestionTookMilli: number;
 };
+
+export type NumberRange =
+	| { start: number; end?: number }
+	| { start?: number; end: number };

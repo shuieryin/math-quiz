@@ -1,4 +1,4 @@
-import { Equation, Question, Questions } from "./types";
+import { DoGenParams, Equation, Question, Questions } from "./types";
 import { shuffle } from "./utils";
 import nls from "../nls";
 import {
@@ -60,7 +60,7 @@ class QuestionGenerator {
 				question = incorrectQuestions.pop();
 			} else {
 				do {
-					question = this.equation.gen();
+					question = this.equation.genQuestion();
 					usedCount++;
 				} while (
 					usedQuestions.has(question.questionContent) &&
@@ -106,6 +106,10 @@ class QuestionGenerator {
 
 	getTitle() {
 		return this.getName().replaceAll("/", " - ");
+	}
+
+	genQuestion(params: DoGenParams) {
+		return this.equation.genQuestionWithState(params);
 	}
 }
 

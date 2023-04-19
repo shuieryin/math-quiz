@@ -1,9 +1,15 @@
-import React, { FunctionComponent, useState } from "react";
+import React, {
+	FunctionComponent,
+	KeyboardEventHandler,
+	useEffect,
+	useRef,
+	useState
+} from "react";
 import { clearInputPressedMilliThreshold, Question } from "../lib/types";
 import { CheckCircle, Exclamation, XCircle } from "./Icons";
 import Tooltip from "./Tooltip";
 import nls from "../nls";
-import Numpad from "./Numpad";
+import Numpad, { NumpadOnClick } from "./Numpad";
 
 type Props = {
 	question: Question;
@@ -22,6 +28,7 @@ const allowedKeys = {
 };
 
 const QuestionCard: FunctionComponent<Props> = ({ question, disabled }) => {
+	const inputRef = useRef<HTMLInputElement>();
 	const [isShowNumpad, setIsShowNumpad] = useState<boolean>(false);
 	const { correct, questionContent, isReuse } = question;
 	const [keyDownStartTime, setKeyDownStartTime] = useState<number>();
@@ -52,25 +59,80 @@ const QuestionCard: FunctionComponent<Props> = ({ question, disabled }) => {
 				mode="click"
 			>
 				<div className="bg-gray-600 py-2 px-3 text-2xl font-semibold text-white rounded-lg">
-					{nls.get("got-question-wrong-before")}
+					{nls.get("got-question-wrong-in-the-past")}
 				</div>
 			</Tooltip>
 		);
 	}
 
-	const gotoNextQuestion = (question: Question) => {
+	const gotoNextQuestion = () => {
 		if (!question.next) {
-			question.inputElement.blur();
+			inputRef.current.blur();
 			setIsShowNumpad(false);
 			return;
 		}
 
-		question.next.inputElement.scrollIntoView({
-			block: "center",
-			inline: "nearest"
-		});
-		question.next.inputElement.focus();
+		question.next.focusInput();
 	};
+
+	const handleChange = (value: string) => {
+		if (!isNaN(value as unknown as number)) {
+			question.inputAnswer = Number(value);
+		} else {
+			delete question.inputAnswer;
+		}
+	};
+
+	const numpadOnClick: NumpadOnClick = value => {
+		switch (value) {
+			case "Enter":
+				gotoNextQuestion();
+				break;
+			case "Backspace":
+				inputRef.current.value = inputRef.current.value.slice(0, -1);
+				inputRef.current.focus();
+				handleChange(inputRef.current.value);
+				break;
+			default:
+				inputRef.current.value += value;
+				inputRef.current.focus();
+				handleChange(inputRef.current.value);
+		}
+	};
+
+	const inputOnKeyDown: KeyboardEventHandler<HTMLInputElement> = e => {
+		if (e.key === "Enter") {
+			if (!keyDownStartTime) {
+				setKeyDownStartTime(performance.now());
+			}
+		} else {
+			if (!allowedKeys[e.key] && !e.key.match(/\d+/)) {
+				e.preventDefault();
+			}
+		}
+	};
+
+	const inputOnKeyUp: KeyboardEventHandler<HTMLInputElement> = e => {
+		if (e.key !== "Enter") return;
+
+		const pressedMilli = performance.now() - keyDownStartTime;
+		if (pressedMilli > clearInputPressedMilliThreshold) {
+			inputRef.current.value = "";
+		} else {
+			gotoNextQuestion();
+		}
+		setKeyDownStartTime(undefined);
+	};
+
+	useEffect(() => {
+		question.focusInput = () => {
+			inputRef.current.scrollIntoView({
+				block: "center",
+				inline: "nearest"
+			});
+			inputRef.current.focus();
+		};
+	}, [question]);
 
 	const inputClassName = `flex-1 answer-box-width h-10 rounded-md shadow-lg ml-5 text-4xl text-center font-semibold focus:bg-yellow-100 focus:outline-none p-0 ${inputBoxBgColor}`;
 
@@ -86,36 +148,17 @@ const QuestionCard: FunctionComponent<Props> = ({ question, disabled }) => {
 					{questionContent} =
 				</span>
 				{disabled ? (
-					<div className={inputClassName}>{question.inputElement.value}</div>
+					<div className={inputClassName}>{question.displayInputAnswer()}</div>
 				) : (
 					<>
 						<input
-							ref={input => (question.inputElement = input)}
+							ref={inputRef}
 							className={inputClassName}
 							inputMode="none"
 							disabled={disabled}
-							onKeyDown={e => {
-								if (e.key === "Enter") {
-									if (!keyDownStartTime) {
-										setKeyDownStartTime(performance.now());
-									}
-								} else {
-									if (!allowedKeys[e.key] && !e.key.match(/\d+/)) {
-										e.preventDefault();
-									}
-								}
-							}}
-							onKeyUp={e => {
-								if (e.key !== "Enter") return;
-
-								const pressedMilli = performance.now() - keyDownStartTime;
-								if (pressedMilli > clearInputPressedMilliThreshold) {
-									question.inputElement.value = "";
-								} else {
-									gotoNextQuestion(question);
-								}
-								setKeyDownStartTime(undefined);
-							}}
+							onChange={e => handleChange(e.target.value)}
+							onKeyDown={inputOnKeyDown}
+							onKeyUp={inputOnKeyUp}
 						/>
 						{isShowNumpad && (
 							<div
@@ -123,23 +166,7 @@ const QuestionCard: FunctionComponent<Props> = ({ question, disabled }) => {
 									question?.next?.next ? "top-20" : "-top-56"
 								}`}
 							>
-								<Numpad
-									onClick={value => {
-										switch (value) {
-											case "Enter":
-												setTimeout(() => gotoNextQuestion(question), 0);
-												break;
-											case "Backspace":
-												question.inputElement.value =
-													question.inputElement.value.slice(0, -1);
-												question.inputElement.focus();
-												break;
-											default:
-												question.inputElement.value += value;
-												question.inputElement.focus();
-										}
-									}}
-								/>
+								<Numpad onClick={numpadOnClick} />
 							</div>
 						)}
 					</>

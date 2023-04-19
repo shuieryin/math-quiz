@@ -31,12 +31,13 @@ export default (questionGenerator: QuestionGenerator) => {
 					incorrectQuestionsNeedRemove.push(questionContent);
 				} else {
 					if (quizName === questionGenerator.getId()) {
-						incorrectQuestionToBeReused.push({
-							questionContent,
-							answer,
-							isReuse: true,
-							quizName
-						});
+						incorrectQuestionToBeReused.push(
+							questionGenerator.genQuestion({
+								questionContent,
+								answer,
+								isReuse: true
+							})
+						);
 					}
 				}
 			}
@@ -66,16 +67,14 @@ export default (questionGenerator: QuestionGenerator) => {
 
 		let correctCount = 0;
 		for (const question of questions) {
-			const { answer, inputElement, questionContent, quizName } = question;
-
-			const { value: inputAnswer } = inputElement;
+			const { answer, inputAnswer, questionContent, quizName } = question;
 
 			const existingIncorrectQuestion = (await getRecord(
 				"incorrectQuestion",
 				questionContent
 			)) as IncorrectQuestion;
 
-			const correct = inputAnswer === String(answer);
+			const correct = question.handleSubmit(inputAnswer);
 			if (correct) {
 				correctCount++;
 

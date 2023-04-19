@@ -5,24 +5,17 @@ class Addition extends Equation {
 	minNum = 2;
 	step = 3;
 
-	constructor(maxNum: number, digitSize: number) {
-		super(maxNum, digitSize);
-	}
-
-	gen = (): EquationResult => {
+	genQuestion = (): EquationResult => {
 		const [answer, ...digits] = genAddSubSequence(
 			this.digitSize,
 			this.minNum,
 			this.maxNum,
 			this.step
 		);
-
-		const questionContent = digits.join(" + ");
-
-		return {
-			questionContent,
+		return this.genQuestionWithState({
+			questionContent: digits.join(" + "),
 			answer
-		} as EquationResult;
+		});
 	};
 }
 

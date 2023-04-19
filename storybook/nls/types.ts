@@ -1,16 +1,24 @@
 export type Lang = "zh" | "en";
 
 export type NlsGradeKey = "grade-one" | "grade-two";
-export type NlsWithinKey = "within-100" | "within-20" | "within-10";
+export type NlsWithinKey =
+	| "within-100"
+	| "within-20"
+	| "within-10"
+	| "within-10k";
 export type NlsMethodKey =
 	| "addition"
 	| "multiplication"
 	| "division"
 	| "subtraction"
 	| "addition-and-subtraction";
-export type NlsDigitKey = "one-digit" | "two-digits" | "three-digits";
+export type NlsDigitKey =
+	| "one-digit"
+	| "two-digits"
+	| "three-digits"
+	| "four-digits";
 export type NlsKey =
-	| "got-question-wrong-before"
+	| "got-question-wrong-in-the-past"
 	| "submit-answer"
 	| "accuracy-rate"
 	| "per-question-spent"

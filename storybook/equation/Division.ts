@@ -1,14 +1,10 @@
 import { Equation, EquationResult } from "../lib/types";
 import { genMulDivSequence } from "./equationUtils";
 
-class Multiplication extends Equation {
+class Division extends Equation {
 	minNum = 2;
 
-	constructor(maxNum: number, digitSize: number) {
-		super(maxNum, digitSize);
-	}
-
-	gen = (): EquationResult => {
+	genQuestion = (): EquationResult => {
 		const [answer, ...digits] = genMulDivSequence(
 			this.digitSize,
 			this.minNum,
@@ -18,11 +14,11 @@ class Multiplication extends Equation {
 
 		const questionContent = digits.join(" ÷ ");
 
-		return {
+		return this.genQuestionWithState({
 			questionContent,
 			answer
-		} as EquationResult;
+		});
 	};
 }
 
-export default Multiplication;
+export default Division;

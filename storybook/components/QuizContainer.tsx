@@ -1,11 +1,9 @@
 import React, { FunctionComponent, useEffect } from "react";
 import "./quiz-container.less";
-import { Question } from "../lib/types";
 import QuestionGenerator from "../lib/QuestionGenerator";
 import { LoaderMedium } from "./Icons";
 import QuizReportInfoCard from "./QuizReportInfoCard";
 import QuizControl from "./QuizControl";
-import QuestionCard from "./QuestionCard";
 import useQuiz from "../hooks/useQuiz";
 import { quizReportColor } from "../lib/utils";
 import nls from "../nls";
@@ -35,28 +33,12 @@ const QuizContainer: FunctionComponent<Props> = ({ questionGenerator }) => {
 	}, []);
 
 	useEffect(() => {
-		const question: Question = questions[0];
-		if (question?.inputElement instanceof HTMLInputElement) {
-			question.inputElement.focus();
-		}
-
-		for (const { inputElement } of questions) {
-			if (inputElement instanceof HTMLInputElement) {
-				inputElement.value = "";
-			}
-		}
+		questions?.[0]?.focusInput();
 	}, [questions]);
 
-	const questionElements = [];
+	const questionElements: JSX.Element[] = [];
 	for (const question of questions) {
-		const { questionContent } = question;
-		questionElements.push(
-			<QuestionCard
-				key={`question-${questionContent}`}
-				question={question}
-				disabled={submitted}
-			/>
-		);
+		questionElements.push(question.genQuestionCard(submitted));
 	}
 
 	return (
@@ -72,7 +54,7 @@ const QuizContainer: FunctionComponent<Props> = ({ questionGenerator }) => {
 					</div>
 					{!submitted && (
 						<button
-							className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 font-bold !text-3xl select-none"
+							className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 rounded-lg px-5 py-2.5 mr-2 mb-2 font-bold !text-3xl select-none"
 							onClick={handleSubmit}
 							disabled={submitted}
 						>

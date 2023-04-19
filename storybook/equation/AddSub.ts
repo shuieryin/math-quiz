@@ -15,16 +15,16 @@ class Subtraction extends Equation {
 		}
 	}
 
-	gen = (): EquationResult => {
+	genQuestion = (): EquationResult => {
 		const {
 			digits: [answer],
 			questionContent
 		} = genAddSubVariants(this.digitSize, this.minNum, this.maxNum, this.step);
 
-		return {
+		return this.genQuestionWithState({
 			questionContent,
 			answer
-		} as EquationResult;
+		});
 	};
 }
 
