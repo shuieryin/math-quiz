@@ -86,7 +86,7 @@ const QuestionCard: FunctionComponent<Props> = ({ question, disabled }) => {
 	const numpadOnClick: NumpadOnClick = value => {
 		switch (value) {
 			case "Enter":
-				gotoNextQuestion();
+				setTimeout(gotoNextQuestion);
 				break;
 			case "Backspace":
 				inputRef.current.value = inputRef.current.value.slice(0, -1);
@@ -119,7 +119,7 @@ const QuestionCard: FunctionComponent<Props> = ({ question, disabled }) => {
 		if (pressedMilli > clearInputPressedMilliThreshold) {
 			inputRef.current.value = "";
 		} else {
-			gotoNextQuestion();
+			setTimeout(gotoNextQuestion);
 		}
 		setKeyDownStartTime(undefined);
 	};
@@ -161,9 +161,10 @@ const QuestionCard: FunctionComponent<Props> = ({ question, disabled }) => {
 							onKeyUp={inputOnKeyUp}
 						/>
 						{isShowNumpad && (
+							// TODO: replace this with modal component appending to the DOM body
 							<div
 								className={`absolute z-10 left-0 ${
-									question?.next?.next ? "top-20" : "-top-56"
+									question?.next ? "top-20" : "-top-56"
 								}`}
 							>
 								<Numpad onClick={numpadOnClick} />
