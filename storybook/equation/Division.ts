@@ -1,10 +1,11 @@
 import { Equation, EquationResult } from "../lib/types";
 import { genMulDivSequence } from "./equationUtils";
+import { QuizId } from "../lib/QuestionGenerator";
 
 class Division extends Equation {
 	minNum = 2;
 
-	genQuestion = (quizId: string): EquationResult => {
+	genQuestion = (quizId: QuizId): EquationResult => {
 		const [answer, ...digits] = genMulDivSequence(
 			this.digitSize,
 			this.minNum,

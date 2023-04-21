@@ -1,5 +1,6 @@
 import { Equation, EquationResult } from "../lib/types";
 import { genAddSubVariants } from "./equationUtils";
+import { QuizId } from "../lib/QuestionGenerator";
 
 class Subtraction extends Equation {
 	minNum = 2;
@@ -15,7 +16,7 @@ class Subtraction extends Equation {
 		}
 	}
 
-	genQuestion = (quizId: string): EquationResult => {
+	genQuestion = (quizId: QuizId): EquationResult => {
 		const {
 			digits: [answer],
 			questionContent
