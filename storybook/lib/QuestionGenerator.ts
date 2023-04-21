@@ -60,13 +60,12 @@ class QuestionGenerator {
 				question = incorrectQuestions.pop();
 			} else {
 				do {
-					question = this.equation.genQuestion();
+					question = this.equation.genQuestion(this.getId());
 					usedCount++;
 				} while (
 					usedQuestions.has(question.questionContent) &&
 					usedCount <= maxUsedCount
 				);
-				question.quizName = this.getId();
 			}
 
 			if (usedCount > maxUsedCount) {

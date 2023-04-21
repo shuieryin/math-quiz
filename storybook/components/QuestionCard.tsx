@@ -40,7 +40,7 @@ const QuestionCard: FunctionComponent<Props> = ({ question, disabled }) => {
 					{unmarshalQuestionContent(question.questionContent)} =
 				</span>
 				{disabled ? (
-					<div className={inputClassName}>{String(question.inputAnswer)}</div>
+					<div className={inputClassName}>{question.inputAnswer as number}</div>
 				) : (
 					<InputWithNumpad
 						inputRef={inputRef}

@@ -135,9 +135,11 @@ export const genDivRemSequence = ({
 export const genDefaultQuestion = ({
 	questionContent,
 	answer,
-	isReuse
+	isReuse,
+	quizId
 }: DoGenParams): EquationResult => {
 	return {
+		quizId,
 		questionContent,
 		answer,
 		handleSubmit: (inputAnswer: number) => {

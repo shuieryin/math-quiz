@@ -6,6 +6,11 @@ import {
 	StoreRecord
 } from "./types";
 import QuestionGenerator from "./QuestionGenerator";
+import {
+	incorrectQuestionStoreConfig,
+	quizReportStoreConfig
+} from "./DbStoreConfig";
+import { V9_TO_V10 } from "./UpgradeDbUtils";
 
 if (!window.indexedDB) {
 	window["indexedDB"] =
@@ -30,21 +35,9 @@ if (!window.indexedDB) {
 }
 
 export const dbName = "math-quiz";
-export const dbVersion = 9;
+export const dbVersion = 10;
 
 const requestDb = () => indexedDB.open(dbName, dbVersion);
-
-const quizReportStoreConfig: StoreConfig = {
-	name: "quizReport",
-	options: { keyPath: "createTime" },
-	indexes: {
-		createTime: { unique: true },
-		quizName: { unique: false },
-		correctCount: { unique: false },
-		totalCount: { unique: false },
-		elapsedMilli: { unique: false }
-	}
-};
 
 const createStore = (db: IDBDatabase, storeConfig: StoreConfig) => {
 	const { name, options, indexes } = storeConfig;
@@ -64,16 +57,10 @@ const createStore = (db: IDBDatabase, storeConfig: StoreConfig) => {
 	};
 };
 
-const incorrectQuestionStoreConfig: StoreConfig = {
-	name: "incorrectQuestion",
-	options: { keyPath: "questionContent" },
-	indexes: {
-		questionContent: { unique: true },
-		answer: { unique: false },
-		count: { unique: false },
-		quizName: { unique: false }
-	}
-};
+export const getUpgradeStore = (
+	transaction: IDBTransaction,
+	storeName: StoreName
+) => transaction.objectStore(storeName);
 
 export const initDb = () => {
 	const request = requestDb();
@@ -83,16 +70,22 @@ export const initDb = () => {
 			resolve();
 		};
 
-		request.onupgradeneeded = event => {
-			const db = event.target["result"] as IDBDatabase;
+		request.onupgradeneeded = async event => {
+			const { target, oldVersion } = event;
+			const db = target["result"] as IDBDatabase;
 
-			createStore(db, incorrectQuestionStoreConfig);
-			createStore(db, quizReportStoreConfig);
+			if (oldVersion === 0) {
+				createStore(db, incorrectQuestionStoreConfig);
+				createStore(db, quizReportStoreConfig);
+				resolve();
+				return;
+			}
 
+			await V9_TO_V10(event);
 			resolve();
 		};
 
-		request.onsuccess = () => {
+		request.onsuccess = async () => {
 			resolve();
 		};
 	});
@@ -103,8 +96,11 @@ export const migrateQuizId = async (questionGenerator: QuestionGenerator) => {
 	await forEachRecord<IncorrectQuestion>(
 		"incorrectQuestion",
 		async question => {
-			if (question.quizName === questionGenerator.getName()) {
-				question.quizName = questionGenerator.getId();
+			if (question.quizId === questionGenerator.getName()) {
+				question.quizId = questionGenerator.getId();
+				incorrectQuestionsToBeUpdated.push(question);
+			} else if (question.quizId?.endsWith("digits")) {
+				question.quizId = question.quizId.replace("digits", "numbers");
 				incorrectQuestionsToBeUpdated.push(question);
 			}
 		}
@@ -115,8 +111,11 @@ export const migrateQuizId = async (questionGenerator: QuestionGenerator) => {
 
 	const quizReportsToBeUpdated = [];
 	await forEachRecord<QuizReport>("quizReport", async quizReport => {
-		if (quizReport.quizName === questionGenerator.getName()) {
-			quizReport.quizName = questionGenerator.getId();
+		if (quizReport.quizId === questionGenerator.getName()) {
+			quizReport.quizId = questionGenerator.getId();
+			quizReportsToBeUpdated.push(quizReport);
+		} else if (quizReport.quizId?.endsWith("digits")) {
+			quizReport.quizId = quizReport.quizId.replace("digits", "numbers");
 			quizReportsToBeUpdated.push(quizReport);
 		}
 	});
@@ -127,6 +126,7 @@ export const migrateQuizId = async (questionGenerator: QuestionGenerator) => {
 
 export const addRecord = (storeName: StoreName, record: StoreRecord) => {
 	const request = requestDb();
+
 	return new Promise<void>(resolve => {
 		request.onerror = () => {
 			console.error(

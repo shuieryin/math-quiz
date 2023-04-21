@@ -40,8 +40,8 @@ const QuizControl: FunctionComponent<Props> = ({
 			let totalCorrect = 0;
 			let totalElapsed = 0;
 			await forEachRecord<QuizReport>("quizReport", quizReport => {
-				const { quizName, totalCount, correctCount, elapsedMilli } = quizReport;
-				if (quizName === questionGenerator.getId()) {
+				const { quizId, totalCount, correctCount, elapsedMilli } = quizReport;
+				if (quizId === questionGenerator.getId()) {
 					quizReports.push(quizReport);
 					totalSize += totalCount;
 					totalCorrect += correctCount;

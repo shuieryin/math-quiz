@@ -4,7 +4,7 @@ import { genMulDivSequence } from "./equationUtils";
 class Division extends Equation {
 	minNum = 2;
 
-	genQuestion = (): EquationResult => {
+	genQuestion = (quizId: string): EquationResult => {
 		const [answer, ...digits] = genMulDivSequence(
 			this.digitSize,
 			this.minNum,
@@ -15,6 +15,7 @@ class Division extends Equation {
 		const questionContent = digits.join(" ÷ ");
 
 		return this.genQuestionWithState({
+			quizId,
 			questionContent,
 			answer
 		});

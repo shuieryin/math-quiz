@@ -15,7 +15,7 @@ const lightTheme = create({
 	base: "light"
 });
 
-const digitOrder = [nls.get("two-digits"), nls.get("three-digits")];
+const digitOrder = [nls.get("two-numbers"), nls.get("three-numbers")];
 const equationOrder = [
 	nls.get("addition"),
 	digitOrder,

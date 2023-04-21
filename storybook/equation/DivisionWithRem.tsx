@@ -14,7 +14,7 @@ const { v4: uuidv4 } = require("uuid");
 class DivisionWithRem extends Equation {
 	minNum = 1;
 
-	genQuestion = (): EquationResult => {
+	genQuestion = (quizId: string): EquationResult => {
 		const divisorEnd = Math.max(
 			1,
 			Math.pow(10, sizeOfNumber(this.maxNum) - 1) - 1
@@ -28,6 +28,7 @@ class DivisionWithRem extends Equation {
 		});
 
 		return this.genQuestionWithState({
+			quizId,
 			questionContent: { dividend, divisor },
 			answer: { quotient, remainder }
 		});

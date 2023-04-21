@@ -27,13 +27,14 @@ export default (questionGenerator: QuestionGenerator) => {
 		const incorrectQuestionsNeedRemove: string[] = [];
 		await forEachRecord<IncorrectQuestion>(
 			"incorrectQuestion",
-			async ({ questionContent, answer, quizName }) => {
-				if (!quizName) {
+			async ({ questionContent, answer, quizId }) => {
+				if (!quizId) {
 					incorrectQuestionsNeedRemove.push(questionContent);
 				} else {
-					if (quizName === questionGenerator.getId()) {
+					if (quizId === questionGenerator.getId()) {
 						incorrectQuestionToBeReused.push(
 							questionGenerator.genQuestion({
+								quizId,
 								questionContent: marshalQuestionContent(questionContent),
 								answer,
 								isReuse: true
@@ -44,7 +45,7 @@ export default (questionGenerator: QuestionGenerator) => {
 			}
 		);
 
-		// remove old records that have no quizName
+		// remove old records which quizId not found
 		for (const questionNeedRemove of incorrectQuestionsNeedRemove) {
 			await removeRecord("incorrectQuestion", questionNeedRemove);
 		}
@@ -68,7 +69,7 @@ export default (questionGenerator: QuestionGenerator) => {
 
 		let correctCount = 0;
 		for (const question of questions) {
-			const { answer, inputAnswer, questionContent, quizName } = question;
+			const { answer, inputAnswer, questionContent, quizId } = question;
 
 			const existingIncorrectQuestion = await getRecord<IncorrectQuestion>(
 				"incorrectQuestion",
@@ -88,15 +89,19 @@ export default (questionGenerator: QuestionGenerator) => {
 							unmarshalQuestionContent(questionContent)
 						);
 					} else {
+						console.log(
+							"==existingIncorrectQuestion",
+							existingIncorrectQuestion
+						);
 						await addRecord("incorrectQuestion", existingIncorrectQuestion);
 					}
 				}
 			} else {
 				// add incorrect question with penalty count
 				const incorrectQuestion: IncorrectQuestion = {
+					quizId,
 					questionContent: unmarshalQuestionContent(questionContent),
-					answer,
-					quizName
+					answer
 				};
 
 				if (existingIncorrectQuestion) {
@@ -111,7 +116,7 @@ export default (questionGenerator: QuestionGenerator) => {
 		}
 
 		const quizReport: QuizReport = {
-			quizName: questionGenerator.getId(),
+			quizId: questionGenerator.getId(),
 			correctCount,
 			totalCount: questions.length,
 			createTime: Date.now(),
