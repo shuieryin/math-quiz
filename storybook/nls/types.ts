@@ -5,18 +5,20 @@ export type NlsWithinKey =
 	| "within-100"
 	| "within-20"
 	| "within-10"
+	| "within-1k"
 	| "within-10k";
 export type NlsMethodKey =
 	| "addition"
 	| "multiplication"
 	| "division"
+	| "division-rem"
 	| "subtraction"
 	| "addition-and-subtraction";
 export type NlsDigitKey =
-	| "one-digit"
-	| "two-digits"
-	| "three-digits"
-	| "four-digits";
+	| "one-number"
+	| "two-numbers"
+	| "three-numbers"
+	| "four-numbers";
 export type NlsKey =
 	| "got-question-wrong-in-the-past"
 	| "submit-answer"

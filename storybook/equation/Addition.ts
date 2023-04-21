@@ -5,7 +5,7 @@ class Addition extends Equation {
 	minNum = 2;
 	step = 3;
 
-	genQuestion = (): EquationResult => {
+	genQuestion = (quizId: string): EquationResult => {
 		const [answer, ...digits] = genAddSubSequence(
 			this.digitSize,
 			this.minNum,
@@ -13,6 +13,7 @@ class Addition extends Equation {
 			this.step
 		);
 		return this.genQuestionWithState({
+			quizId,
 			questionContent: digits.join(" + "),
 			answer
 		});

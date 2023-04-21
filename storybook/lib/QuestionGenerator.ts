@@ -10,8 +10,8 @@ import {
 } from "../nls/types";
 
 const defaultQuestionSizes = [
-	3, 5, 10, 20, 30, 50, 60, 80, 100, 120, 150, 200, 500, 750, 1000, 1500,
-	2000, 3000
+	3, 5, 10, 20, 30, 50, 60, 80, 100, 120, 150, 200, 500, 750, 1000, 1500, 2000,
+	3000
 ];
 
 export type QuizId =
@@ -29,7 +29,7 @@ class QuestionGenerator {
 	}: {
 		id: QuizId;
 		maxNum: number;
-		digitSize: number;
+		digitSize?: number;
 		EquationClass: typeof Equation;
 	}) {
 		this.id = id;
@@ -60,13 +60,12 @@ class QuestionGenerator {
 				question = incorrectQuestions.pop();
 			} else {
 				do {
-					question = this.equation.genQuestion();
+					question = this.equation.genQuestion(this.getId());
 					usedCount++;
 				} while (
 					usedQuestions.has(question.questionContent) &&
 					usedCount <= maxUsedCount
 				);
-				question.quizName = this.getId();
 			}
 
 			if (usedCount > maxUsedCount) {

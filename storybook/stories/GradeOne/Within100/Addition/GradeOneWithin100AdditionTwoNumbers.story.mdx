@@ -3,12 +3,12 @@ import { defaultDocParams } from "../../../../lib/utils";
 
 import QuizContainer from "../../../../components/QuizContainer";
 import QuestionGenerator from "../../../../lib/QuestionGenerator";
-import DivisionWithRem from "../../../../equation/DivisionWithRem";
+import Addition from "../../../../equation/Addition";
 const questionGenerator = new QuestionGenerator({
-	id: "grade-two_within-100_division-rem_two-digits",
-	maxNum: 99,
+	id: "grade-one_within-100_addition_two-numbers",
+	maxNum: 100,
 	digitSize: 2,
-	EquationClass: DivisionWithRem
+	EquationClass: Addition
 });
 
 <Meta title={questionGenerator.getName()} parameters={defaultDocParams()} />

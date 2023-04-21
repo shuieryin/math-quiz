@@ -1,6 +1,9 @@
-import { QuizReport } from "./types";
+import { Question, QuestionContent, QuizReport } from "./types";
 import nls from "../nls";
 import { NlsReplacements } from "../nls/types";
+import { CheckCircle, Exclamation, XCircle } from "../components/Icons";
+import Tooltip from "../components/Tooltip";
+import React from "react";
 
 export const defaultDocParams = () => ({
 	viewMode: "docs",
@@ -136,3 +139,74 @@ export const isMobileWithTablet = (() => {
 	})(navigator.userAgent || navigator.vendor || window["opera"]);
 	return check;
 })();
+
+export const questionCardTopLeft = ({
+	correct,
+	isReuse
+}: Question): {
+	inputBoxBgColor: string;
+	topLeftIcon: JSX.Element;
+	correctColor?: string;
+	incorrectColor?: string;
+} => {
+	const correctColor = "bg-green-700";
+	const incorrectColor = "bg-red-400";
+	let inputBoxBgColor, topLeftIcon;
+	if (correct === true) {
+		inputBoxBgColor = correctColor;
+		topLeftIcon = (
+			<div className="absolute h-8 w-8 -left-4 -top-4">
+				{CheckCircle(
+					"text-green-700 bg-gray-400 rounded-full dark:text-green-400"
+				)}
+			</div>
+		);
+	} else if (correct === false) {
+		inputBoxBgColor = incorrectColor;
+		topLeftIcon = (
+			<div className="absolute h-8 w-8 -left-4 -top-4">
+				{XCircle("text-red-500 bg-gray-400 rounded-full dark:text-red-400")}
+			</div>
+		);
+	} else if (isReuse) {
+		topLeftIcon = (
+			<Tooltip
+				trigger={Exclamation("text-yellow-400 bg-gray-400 rounded-full")}
+				triggerPosition="-left-4 -top-4"
+				position="-top-6 left-6"
+				mode="click"
+			>
+				<div className="bg-gray-600 py-2 px-3 text-2xl font-semibold text-white rounded-lg">
+					{nls.get("got-question-wrong-in-the-past")}
+				</div>
+			</Tooltip>
+		);
+	}
+
+	return { inputBoxBgColor, topLeftIcon, correctColor, incorrectColor };
+};
+
+export const unmarshalQuestionContent = (
+	questionContent: QuestionContent
+): string => {
+	let content;
+	if (questionContent instanceof Object) {
+		content = JSON.stringify(questionContent);
+	} else {
+		content = questionContent;
+	}
+	return content;
+};
+
+export const marshalQuestionContent = (content: string): QuestionContent => {
+	let questionContent: QuestionContent;
+	try {
+		questionContent = JSON.parse(content);
+	} catch (e) {
+		questionContent = content;
+	}
+	return questionContent;
+};
+
+export const sizeOfNumber = (num: number): number =>
+	(Math.log(num) * Math.LOG10E + 1) | 0;

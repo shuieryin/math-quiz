@@ -13,6 +13,7 @@ import {
 } from "../lib/types";
 import QuestionGenerator from "../lib/QuestionGenerator";
 import { OnStart } from "../components/QuizControl";
+import { marshalQuestionContent, unmarshalQuestionContent } from "../lib/utils";
 
 export default (questionGenerator: QuestionGenerator) => {
 	const [questions, setQuestions] = useState<Questions>([]);
@@ -26,14 +27,15 @@ export default (questionGenerator: QuestionGenerator) => {
 		const incorrectQuestionsNeedRemove: string[] = [];
 		await forEachRecord<IncorrectQuestion>(
 			"incorrectQuestion",
-			async ({ questionContent, answer, quizName }) => {
-				if (!quizName) {
+			async ({ questionContent, answer, quizId }) => {
+				if (!quizId) {
 					incorrectQuestionsNeedRemove.push(questionContent);
 				} else {
-					if (quizName === questionGenerator.getId()) {
+					if (quizId === questionGenerator.getId()) {
 						incorrectQuestionToBeReused.push(
 							questionGenerator.genQuestion({
-								questionContent,
+								quizId,
+								questionContent: marshalQuestionContent(questionContent),
 								answer,
 								isReuse: true
 							})
@@ -43,7 +45,7 @@ export default (questionGenerator: QuestionGenerator) => {
 			}
 		);
 
-		// remove old records that have no quizName
+		// remove old records which quizId not found
 		for (const questionNeedRemove of incorrectQuestionsNeedRemove) {
 			await removeRecord("incorrectQuestion", questionNeedRemove);
 		}
@@ -67,12 +69,12 @@ export default (questionGenerator: QuestionGenerator) => {
 
 		let correctCount = 0;
 		for (const question of questions) {
-			const { answer, inputAnswer, questionContent, quizName } = question;
+			const { answer, inputAnswer, questionContent, quizId } = question;
 
-			const existingIncorrectQuestion = (await getRecord(
+			const existingIncorrectQuestion = await getRecord<IncorrectQuestion>(
 				"incorrectQuestion",
-				questionContent
-			)) as IncorrectQuestion;
+				unmarshalQuestionContent(questionContent)
+			);
 
 			const correct = question.handleSubmit(inputAnswer);
 			if (correct) {
@@ -82,17 +84,24 @@ export default (questionGenerator: QuestionGenerator) => {
 				if (existingIncorrectQuestion) {
 					existingIncorrectQuestion.count--;
 					if (existingIncorrectQuestion.count <= 0) {
-						await removeRecord("incorrectQuestion", questionContent);
+						await removeRecord(
+							"incorrectQuestion",
+							unmarshalQuestionContent(questionContent)
+						);
 					} else {
+						console.log(
+							"==existingIncorrectQuestion",
+							existingIncorrectQuestion
+						);
 						await addRecord("incorrectQuestion", existingIncorrectQuestion);
 					}
 				}
 			} else {
 				// add incorrect question with penalty count
 				const incorrectQuestion: IncorrectQuestion = {
-					questionContent,
-					answer,
-					quizName
+					quizId,
+					questionContent: unmarshalQuestionContent(questionContent),
+					answer
 				};
 
 				if (existingIncorrectQuestion) {
@@ -107,7 +116,7 @@ export default (questionGenerator: QuestionGenerator) => {
 		}
 
 		const quizReport: QuizReport = {
-			quizName: questionGenerator.getId(),
+			quizId: questionGenerator.getId(),
 			correctCount,
 			totalCount: questions.length,
 			createTime: Date.now(),

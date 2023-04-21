@@ -3,12 +3,12 @@ import { defaultDocParams } from "../../../../lib/utils";
 
 import QuizContainer from "../../../../components/QuizContainer";
 import QuestionGenerator from "../../../../lib/QuestionGenerator";
-import Multiplication from "../../../../equation/Multiplication";
+import Subtraction from "../../../../equation/Subtraction";
 const questionGenerator = new QuestionGenerator({
-	id: "grade-two_within-10_multiplication_two-digits",
-	maxNum: 9,
-	digitSize: 2,
-	EquationClass: Multiplication
+	id: "grade-one_within-100_subtraction_three-numbers",
+	maxNum: 100,
+	digitSize: 3,
+	EquationClass: Subtraction
 });
 
 <Meta title={questionGenerator.getName()} parameters={defaultDocParams()} />

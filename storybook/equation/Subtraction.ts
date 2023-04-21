@@ -5,18 +5,18 @@ class Subtraction extends Equation {
 	minNum = 2;
 	step = 2;
 
-	genQuestion = (): EquationResult => {
-		const digits = genAddSubSequence(
+	genQuestion = (quizId: string): EquationResult => {
+		const [answer, ...digits] = genAddSubSequence(
 			this.digitSize,
 			this.minNum,
 			this.maxNum,
 			this.step
 		);
-		const answer = digits.pop();
 
 		const questionContent = digits.join(" - ");
 
 		return this.genQuestionWithState({
+			quizId,
 			questionContent,
 			answer
 		});
