@@ -1,10 +1,11 @@
 import { Equation, EquationResult } from "../lib/types";
 import { genMulDivSequence } from "./equationUtils";
+import { QuizId } from "../lib/QuestionGenerator";
 
 class Multiplication extends Equation {
 	minNum = 2;
 
-	genQuestion = (quizId: string): EquationResult => {
+	genQuestion = (quizId: QuizId): EquationResult => {
 		const digits = genMulDivSequence(this.digitSize, this.minNum, this.maxNum);
 		const answer = digits.pop();
 

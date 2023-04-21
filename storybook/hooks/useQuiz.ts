@@ -89,10 +89,6 @@ export default (questionGenerator: QuestionGenerator) => {
 							unmarshalQuestionContent(questionContent)
 						);
 					} else {
-						console.log(
-							"==existingIncorrectQuestion",
-							existingIncorrectQuestion
-						);
 						await addRecord("incorrectQuestion", existingIncorrectQuestion);
 					}
 				}

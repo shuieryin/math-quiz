@@ -1,5 +1,6 @@
 import { genDefaultQuestion } from "../equation/equationUtils";
-import { IncorrectQuestionV9, QuizReportV9 } from "./UpgradeDbUtils";
+import { IncorrectQuestionV9, QuizReportV9 } from "./MigrateDbStoreUtils";
+import { QuizId } from "./QuestionGenerator";
 
 export type DivisionRemQuestion = { dividend: number; divisor: number };
 export type DivisionRemAnswer = { quotient?: number; remainder?: number };
@@ -7,7 +8,7 @@ export type Answer = number | DivisionRemAnswer;
 
 export type QuestionContent = string | DivisionRemQuestion;
 export type Question = {
-	quizId?: string;
+	quizId?: QuizId;
 	questionContent: QuestionContent;
 	answer: Answer;
 	inputAnswer?: Answer;
@@ -35,7 +36,7 @@ export type EquationResult = DoGenParams &
 	Pick<Question, "inputAnswer">;
 
 export type QuizReport = {
-	quizId: string;
+	quizId: QuizId;
 	correctCount: number;
 	totalCount: number;
 	createTime: number;
@@ -76,7 +77,7 @@ export class Equation {
 	maxNum: number;
 	digitSize: number;
 	maxQuestionSize: number;
-	genQuestion: (quizId: string) => EquationResult;
+	genQuestion: (quizId: QuizId) => EquationResult;
 	genQuestionWithState = genDefaultQuestion;
 
 	constructor(maxNum: number, digitSize = 2) {

@@ -7,10 +7,11 @@ import {
 	milliToMinSec,
 	quizReportColor
 } from "../lib/utils";
-import { forEachRecord, initDb, migrateQuizId } from "../lib/DbHelper";
+import { forEachRecord, initDb } from "../lib/DbHelper";
 import Accordion from "./Accordion";
 import QuizReportInfoCard from "./QuizReportInfoCard";
 import nls from "../nls";
+import { migrateQuizId } from "../lib/MigrateDbStoreUtils";
 
 export type OnStart = (questionSize: number) => void | Promise<void>;
 

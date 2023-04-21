@@ -1,16 +1,9 @@
-import {
-	IncorrectQuestion,
-	QuizReport,
-	StoreConfig,
-	StoreName,
-	StoreRecord
-} from "./types";
-import QuestionGenerator from "./QuestionGenerator";
+import { StoreConfig, StoreName, StoreRecord } from "./types";
 import {
 	incorrectQuestionStoreConfig,
 	quizReportStoreConfig
 } from "./DbStoreConfig";
-import { V9_TO_V10 } from "./UpgradeDbUtils";
+import { V9_TO_V10 } from "./MigrateDbStoreUtils";
 
 if (!window.indexedDB) {
 	window["indexedDB"] =
@@ -89,39 +82,6 @@ export const initDb = () => {
 			resolve();
 		};
 	});
-};
-
-export const migrateQuizId = async (questionGenerator: QuestionGenerator) => {
-	const incorrectQuestionsToBeUpdated = [];
-	await forEachRecord<IncorrectQuestion>(
-		"incorrectQuestion",
-		async question => {
-			if (question.quizId === questionGenerator.getName()) {
-				question.quizId = questionGenerator.getId();
-				incorrectQuestionsToBeUpdated.push(question);
-			} else if (question.quizId?.endsWith("digits")) {
-				question.quizId = question.quizId.replace("digits", "numbers");
-				incorrectQuestionsToBeUpdated.push(question);
-			}
-		}
-	);
-	for (const incorrectQuestionToBeUpdated of incorrectQuestionsToBeUpdated) {
-		await addRecord("incorrectQuestion", incorrectQuestionToBeUpdated);
-	}
-
-	const quizReportsToBeUpdated = [];
-	await forEachRecord<QuizReport>("quizReport", async quizReport => {
-		if (quizReport.quizId === questionGenerator.getName()) {
-			quizReport.quizId = questionGenerator.getId();
-			quizReportsToBeUpdated.push(quizReport);
-		} else if (quizReport.quizId?.endsWith("digits")) {
-			quizReport.quizId = quizReport.quizId.replace("digits", "numbers");
-			quizReportsToBeUpdated.push(quizReport);
-		}
-	});
-	for (const quizReportToBeUpdated of quizReportsToBeUpdated) {
-		await addRecord("quizReport", quizReportToBeUpdated);
-	}
 };
 
 export const addRecord = (storeName: StoreName, record: StoreRecord) => {

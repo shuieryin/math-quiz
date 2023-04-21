@@ -8,13 +8,14 @@ import { genDefaultQuestion, genDivRemSequence } from "./equationUtils";
 import React from "react";
 import DivisionWithRemQuestionCard from "../components/DivisionWithRemQuestionCard";
 import { sizeOfNumber } from "../lib/utils";
+import { QuizId } from "../lib/QuestionGenerator";
 
 const { v4: uuidv4 } = require("uuid");
 
 class DivisionWithRem extends Equation {
 	minNum = 1;
 
-	genQuestion = (quizId: string): EquationResult => {
+	genQuestion = (quizId: QuizId): EquationResult => {
 		const divisorEnd = Math.max(
 			1,
 			Math.pow(10, sizeOfNumber(this.maxNum) - 1) - 1
