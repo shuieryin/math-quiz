@@ -47,6 +47,10 @@ export const parameters = {
 					nls.get("within-20"),
 					equationOrder,
 					nls.get("within-100"),
+					equationOrder,
+					nls.get("within-1k"),
+					equationOrder,
+					nls.get("within-10k"),
 					equationOrder
 				],
 				nls.get("grade-two"),
@@ -54,6 +58,10 @@ export const parameters = {
 					nls.get("within-10"),
 					equationOrder,
 					nls.get("within-100"),
+					equationOrder,
+					nls.get("within-1k"),
+					equationOrder,
+					nls.get("within-10k"),
 					equationOrder
 				]
 			]

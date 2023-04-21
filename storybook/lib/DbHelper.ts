@@ -98,7 +98,7 @@ export const initDb = () => {
 	});
 };
 
-export const updateQuizId = async (questionGenerator: QuestionGenerator) => {
+export const migrateQuizId = async (questionGenerator: QuestionGenerator) => {
 	const incorrectQuestionsToBeUpdated = [];
 	await forEachRecord<IncorrectQuestion>(
 		"incorrectQuestion",
@@ -194,9 +194,12 @@ export const removeRecord = (storeName: StoreName, key: string) => {
 	});
 };
 
-export const getRecord = (storeName: StoreName, key) => {
+export const getRecord = <Record extends StoreRecord>(
+	storeName: StoreName,
+	key
+): Promise<Record> => {
 	const request = requestDb();
-	return new Promise<StoreRecord>(resolve => {
+	return new Promise<Record>(resolve => {
 		request.onerror = () => {
 			console.error(
 				`Error getting record from store [${storeName}] in database [${dbName}] by key [${key}].`

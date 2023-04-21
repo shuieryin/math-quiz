@@ -1,6 +1,12 @@
 import React from "react";
 import { randBool, randInt } from "../lib/utils";
-import { DoGenParams, EquationResult, NumberRange } from "../lib/types";
+import {
+	DivisionRemAnswer,
+	DivisionRemQuestion,
+	DoGenParams,
+	EquationResult,
+	NumberRange
+} from "../lib/types";
 import QuestionCard from "../components/QuestionCard";
 
 export const genAddSubSequence = (
@@ -8,7 +14,7 @@ export const genAddSubSequence = (
 	minNum: number,
 	maxNum: number,
 	step: number
-) => {
+): number[] => {
 	let lastDigit = maxNum;
 	const digits = [];
 	for (let i = 0; i < digitSize; i++) {
@@ -73,7 +79,7 @@ export const genMulDivSequence = (
 	digitSize: number,
 	minNum: number,
 	maxNum: number
-) => {
+): number[] => {
 	let answer = 1;
 	const digits = [];
 	for (let i = 0; i < digitSize; i++) {
@@ -97,7 +103,7 @@ export const genDivRemSequence = ({
 }: {
 	dividendRange: NumberRange;
 	divisorRange: NumberRange;
-}): { questionContent: string; quotient: number; remainder: number } => {
+}): DivisionRemQuestion & DivisionRemAnswer => {
 	if (dividendStart > dividendEnd) {
 		throw new Error(
 			`Dividend end must be greater than start, start: [${dividendStart}], end: [${dividendEnd}]`
@@ -119,13 +125,14 @@ export const genDivRemSequence = ({
 	const quotient = Math.trunc(dividend / divisor);
 	const remainder = dividend % divisor;
 	return {
-		questionContent: `${dividend} ÷ ${divisor}`,
 		quotient,
-		remainder
+		remainder,
+		dividend,
+		divisor
 	};
 };
 
-export const genSingleAnswerQuestion = ({
+export const genDefaultQuestion = ({
 	questionContent,
 	answer,
 	isReuse
@@ -145,9 +152,6 @@ export const genSingleAnswerQuestion = ({
 					disabled={submitted}
 				/>
 			);
-		},
-		displayInputAnswer() {
-			return this.inputAnswer;
 		}
 	};
 };

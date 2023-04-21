@@ -13,6 +13,7 @@ import {
 } from "../lib/types";
 import QuestionGenerator from "../lib/QuestionGenerator";
 import { OnStart } from "../components/QuizControl";
+import { marshalQuestionContent, unmarshalQuestionContent } from "../lib/utils";
 
 export default (questionGenerator: QuestionGenerator) => {
 	const [questions, setQuestions] = useState<Questions>([]);
@@ -33,7 +34,7 @@ export default (questionGenerator: QuestionGenerator) => {
 					if (quizName === questionGenerator.getId()) {
 						incorrectQuestionToBeReused.push(
 							questionGenerator.genQuestion({
-								questionContent,
+								questionContent: marshalQuestionContent(questionContent),
 								answer,
 								isReuse: true
 							})
@@ -69,10 +70,10 @@ export default (questionGenerator: QuestionGenerator) => {
 		for (const question of questions) {
 			const { answer, inputAnswer, questionContent, quizName } = question;
 
-			const existingIncorrectQuestion = (await getRecord(
+			const existingIncorrectQuestion = await getRecord<IncorrectQuestion>(
 				"incorrectQuestion",
-				questionContent
-			)) as IncorrectQuestion;
+				unmarshalQuestionContent(questionContent)
+			);
 
 			const correct = question.handleSubmit(inputAnswer);
 			if (correct) {
@@ -82,7 +83,10 @@ export default (questionGenerator: QuestionGenerator) => {
 				if (existingIncorrectQuestion) {
 					existingIncorrectQuestion.count--;
 					if (existingIncorrectQuestion.count <= 0) {
-						await removeRecord("incorrectQuestion", questionContent);
+						await removeRecord(
+							"incorrectQuestion",
+							unmarshalQuestionContent(questionContent)
+						);
 					} else {
 						await addRecord("incorrectQuestion", existingIncorrectQuestion);
 					}
@@ -90,7 +94,7 @@ export default (questionGenerator: QuestionGenerator) => {
 			} else {
 				// add incorrect question with penalty count
 				const incorrectQuestion: IncorrectQuestion = {
-					questionContent,
+					questionContent: unmarshalQuestionContent(questionContent),
 					answer,
 					quizName
 				};

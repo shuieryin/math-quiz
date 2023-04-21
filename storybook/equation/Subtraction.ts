@@ -6,13 +6,12 @@ class Subtraction extends Equation {
 	step = 2;
 
 	genQuestion = (): EquationResult => {
-		const digits = genAddSubSequence(
+		const [answer, ...digits] = genAddSubSequence(
 			this.digitSize,
 			this.minNum,
 			this.maxNum,
 			this.step
 		);
-		const answer = digits.pop();
 
 		const questionContent = digits.join(" - ");
 

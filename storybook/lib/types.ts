@@ -1,11 +1,13 @@
-import { genSingleAnswerQuestion } from "../equation/equationUtils";
+import { genDefaultQuestion } from "../equation/equationUtils";
 
-export type DivisionRemAnswer = { quotient: number; remainder: number };
+export type DivisionRemQuestion = { dividend: number; divisor: number };
+export type DivisionRemAnswer = { quotient?: number; remainder?: number };
 export type Answer = number | DivisionRemAnswer;
 
+export type QuestionContent = string | DivisionRemQuestion;
 export type Question = {
 	quizName?: string;
-	questionContent: string;
+	questionContent: QuestionContent;
 	answer: Answer;
 	inputAnswer?: Answer;
 	correct?: boolean;
@@ -15,13 +17,12 @@ export type Question = {
 	isReuse?: boolean;
 	handleSubmit: <InputPayload>(InputPayload) => boolean;
 	genQuestionCard: (submitted: boolean) => JSX.Element;
-	displayInputAnswer: () => JSX.Element;
 };
 export type Questions = Question[];
 
 export type IncorrectQuestion = Required<
-	Pick<Question, "questionContent" | "answer" | "quizName">
-> & { count?: number };
+	Pick<Question, "answer" | "quizName">
+> & { count?: number; questionContent: string };
 
 export type DoGenParams = Required<
 	Pick<Question, "questionContent" | "answer">
@@ -29,9 +30,7 @@ export type DoGenParams = Required<
 	Pick<Question, "isReuse">;
 
 export type EquationResult = DoGenParams &
-	Required<
-		Pick<Question, "handleSubmit" | "genQuestionCard" | "displayInputAnswer">
-	> &
+	Required<Pick<Question, "handleSubmit" | "genQuestionCard">> &
 	Pick<Question, "inputAnswer">;
 
 export class Equation {
@@ -39,7 +38,7 @@ export class Equation {
 	digitSize: number;
 	maxQuestionSize: number;
 	genQuestion: () => EquationResult;
-	genQuestionWithState = genSingleAnswerQuestion;
+	genQuestionWithState = genDefaultQuestion;
 
 	constructor(maxNum: number, digitSize = 2) {
 		this.maxNum = maxNum;
