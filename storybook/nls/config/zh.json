@@ -5,6 +5,7 @@
 	"per-question-spent": "平均每题用时",
 	"question-unit": "题",
 	"start-quiz": "开始",
+	"exit-quiz": "退出",
 	"minutes": "分",
 	"seconds": "秒",
 	"spent": "用时",
@@ -31,5 +32,10 @@
 	"math-quiz": "数学练习",
 	"short-months": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
 	"quiz-time": "${year}年${month}${day}日 ${hour}时${minute}分${seconds}",
-	"quiz-time-nosec": "${year}年${month}${day}日 ${hour}时${minute}分"
+	"quiz-time-nosec": "${year}年${month}${day}日 ${hour}时${minute}分",
+	"yes": "是",
+	"no": "否",
+	"confirm-submit-answers": "你是否确定提交答案？",
+	"make-sure-check-answers": "提交前请仔细检查答案。",
+	"confirm-exit-quiz": "你是否确定退出？"
 }

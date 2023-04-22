@@ -5,6 +5,7 @@
 	"per-question-spent": "Per question spent",
 	"question-unit": "questions",
 	"start-quiz": "Start",
+	"exit-quiz": "Quit",
 	"minutes": "minute(s)",
 	"seconds": "second(s)",
 	"spent": "Spent",
@@ -31,5 +32,10 @@
 	"math-quiz": "Math quiz",
 	"short-months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 	"quiz-time": "${month} ${day} ${year} ${hour}:${minute}:${seconds}",
-	"quiz-time-nosec": "${month} ${day} ${year} ${hour}:${minute}"
+	"quiz-time-nosec": "${month} ${day} ${year} ${hour}:${minute}",
+	"yes": "Yes",
+	"no": "No",
+	"confirm-submit-answers": "Are you sure you want to submit the answers?",
+	"make-sure-check-answers": "Please double check your answers before submission.",
+	"confirm-exit-quiz": "Are you sure you want to quit?"
 }

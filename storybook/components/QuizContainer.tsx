@@ -7,6 +7,8 @@ import QuizControl from "./QuizControl";
 import useQuiz from "../hooks/useQuiz";
 import { quizReportColor } from "../lib/utils";
 import nls from "../nls";
+import PopupModal from "./PopupModal";
+import YesNoModalContent from "./YesNoModalContent";
 
 type Props = {
 	questionGenerator: QuestionGenerator;
@@ -15,6 +17,7 @@ type Props = {
 const QuizContainer: FunctionComponent<Props> = ({ questionGenerator }) => {
 	const {
 		startQuiz,
+		exitQuiz,
 		handleSubmit,
 		questions,
 		quizReport,
@@ -53,14 +56,63 @@ const QuizContainer: FunctionComponent<Props> = ({ questionGenerator }) => {
 						</div>
 					</div>
 					{!submitted && (
-						<button
-							className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 rounded-lg px-5 py-2.5 mr-2 mb-2 font-bold !text-3xl select-none"
-							onClick={handleSubmit}
-							disabled={submitted}
-						>
-							{nls.get("submit-answer")}
-							{submitting && <LoaderMedium />}
-						</button>
+						<div className="flex justify-evenly">
+							<PopupModal
+								initTrigger={setIsShowModal => (
+									<button
+										className="w-1/2 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 rounded-lg px-5 py-2.5 mr-2 mb-2 font-bold !text-3xl select-none"
+										onClick={() => setIsShowModal(true)}
+										disabled={submitted}
+									>
+										{nls.get("submit-answer")}
+										{submitting && <LoaderMedium />}
+									</button>
+								)}
+								initContent={setIsShowModal => (
+									<YesNoModalContent
+										bodyContent={
+											<>
+												<p className="text-2xl font-semibold">
+													{nls.get("confirm-submit-answers")}
+												</p>
+												<p>{nls.get("make-sure-check-answers")}</p>
+											</>
+										}
+										onYes={async () => {
+											await handleSubmit();
+											setIsShowModal(false);
+										}}
+										onNo={() => setIsShowModal(false)}
+									/>
+								)}
+							/>
+							<PopupModal
+								initTrigger={setIsShowModal => (
+									<button
+										className="w-5/12 focus:outline-none text-white bg-gray-700 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 rounded-lg px-5 py-2.5 mr-2 mb-2 font-bold !text-3xl select-none"
+										onClick={() => setIsShowModal(true)}
+										disabled={submitted}
+									>
+										{nls.get("exit-quiz")}
+										{submitting && <LoaderMedium />}
+									</button>
+								)}
+								initContent={setIsShowModal => (
+									<YesNoModalContent
+										bodyContent={
+											<p className="text-2xl font-semibold">
+												{nls.get("confirm-exit-quiz")}
+											</p>
+										}
+										onYes={() => {
+											exitQuiz();
+											setIsShowModal(false);
+										}}
+										onNo={() => setIsShowModal(false)}
+									/>
+								)}
+							/>
+						</div>
 					)}
 				</div>
 			)}

@@ -20,12 +20,15 @@ export type NlsDigitKey =
 	| "three-numbers"
 	| "four-numbers";
 export type NlsKey =
+	| "yes"
+	| "no"
 	| "got-question-wrong-in-the-past"
 	| "submit-answer"
 	| "accuracy-rate"
 	| "per-question-spent"
 	| "question-unit"
 	| "start-quiz"
+	| "exit-quiz"
 	| "minutes"
 	| "seconds"
 	| "spent"
@@ -36,6 +39,9 @@ export type NlsKey =
 	| "short-months"
 	| "quiz-time"
 	| "quiz-time-nosec"
+	| "confirm-submit-answers"
+	| "make-sure-check-answers"
+	| "confirm-exit-quiz"
 	| NlsGradeKey
 	| NlsWithinKey
 	| NlsMethodKey

@@ -125,9 +125,17 @@ export default (questionGenerator: QuestionGenerator) => {
 		setSubmitted(true);
 	};
 
+	const exitQuiz = () => {
+		setSubmitted(false);
+		setQuizReport(undefined);
+		setQuestions([]);
+		setStartTime(0);
+	};
+
 	return {
 		questions,
 		startQuiz,
+		exitQuiz,
 		handleSubmit,
 		quizReport,
 		submitting,
