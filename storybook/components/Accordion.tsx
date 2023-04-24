@@ -43,7 +43,7 @@ const Accordion: FunctionComponent<Props> = ({
 							first ? " rounded-t-lg" : ""
 						}${!open && last ? " rounded-b-lg" : ""}${
 							open || !last ? " border-b-0" : ""
-						}${open ? " bg-gray-100 bg-gray-800" : ""}`}
+						}${open ? " bg-gray-800" : ""}`}
 						aria-expanded={open}
 						onClick={async () => {
 							if (disabled) return;

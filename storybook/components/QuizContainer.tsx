@@ -78,10 +78,7 @@ const QuizContainer: FunctionComponent<Props> = ({ questionGenerator }) => {
 												<p>{nls.get("make-sure-check-answers")}</p>
 											</>
 										}
-										onYes={async () => {
-											await handleSubmit();
-											setIsShowModal(false);
-										}}
+										onYes={handleSubmit}
 										onNo={() => setIsShowModal(false)}
 									/>
 								)}

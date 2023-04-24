@@ -47,7 +47,7 @@ export type NlsKey =
 	| NlsMethodKey
 	| NlsDigitKey;
 
-export type LangPack = { [key in NlsKey]?: string };
+export type LangPack = { [key in NlsKey]?: string | string[] };
 export type LangPacks = {
 	[lang in Lang]?: LangPack;
 };

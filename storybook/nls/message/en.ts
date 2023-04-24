@@ -1,4 +1,6 @@
-{
+import { LangPack } from "../types";
+
+const en: LangPack = {
 	"got-question-wrong-in-the-past": "You got this question wrong in the past",
 	"submit-answer": "Submit answers",
 	"accuracy-rate": "Accuracy",
@@ -6,10 +8,11 @@
 	"question-unit": "questions",
 	"start-quiz": "Start",
 	"exit-quiz": "Quit",
-	"minutes": "minute(s)",
-	"seconds": "second(s)",
-	"spent": "Spent",
-	"got-x-out-of-y-questions-right": "You got ${totalCorrect} / ${totalSize} questions correct !",
+	minutes: "minute(s)",
+	seconds: "second(s)",
+	spent: "Spent",
+	"got-x-out-of-y-questions-right":
+		"You got ${totalCorrect} / ${totalSize} questions correct !",
 	"quiz-summary": "Summary",
 	"quiz-history": "History",
 	"grade-one": "Grade 1",
@@ -19,23 +22,39 @@
 	"within-20": "Within 20",
 	"within-1k": "Within 1k",
 	"within-10k": "Within 10k",
-	"addition": "Addition",
-	"subtraction": "Subtraction",
+	addition: "Addition",
+	subtraction: "Subtraction",
 	"addition-and-subtraction": "Addition and subtraction",
-	"multiplication": "Multiplication",
-	"division": "Division",
+	multiplication: "Multiplication",
+	division: "Division",
 	"division-rem": "Division with remainder",
-    "one-number": "One number",
+	"one-number": "One number",
 	"two-numbers": "Two numbers",
 	"three-numbers": "Three numbers",
 	"four-numbers": "Four numbers",
 	"math-quiz": "Math quiz",
-	"short-months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+	"short-months": [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec"
+	],
 	"quiz-time": "${month} ${day} ${year} ${hour}:${minute}:${seconds}",
 	"quiz-time-nosec": "${month} ${day} ${year} ${hour}:${minute}",
-	"yes": "Yes",
-	"no": "No",
+	yes: "Yes",
+	no: "No",
 	"confirm-submit-answers": "Are you sure you want to submit the answers?",
-	"make-sure-check-answers": "Please double check your answers before submission.",
+	"make-sure-check-answers":
+		"Please double check your answers before submission.",
 	"confirm-exit-quiz": "Are you sure you want to quit?"
-}
+};
+
+export default en;

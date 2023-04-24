@@ -1,4 +1,6 @@
 import { Lang, LangPacks, NlsKey, NlsReplacements } from "./types";
+import zh from "./message/zh";
+import en from "./message/en";
 
 class Nls {
 	nlsLangPacks: LangPacks;
@@ -6,8 +8,8 @@ class Nls {
 
 	constructor() {
 		this.nlsLangPacks = {
-			zh: require("./config/zh.json"),
-			en: require("./config/en.json")
+			zh,
+			en
 		};
 
 		for (const lang in this.nlsLangPacks) {
@@ -33,7 +35,9 @@ class Nls {
 				} else {
 					replaceValue = replacement;
 				}
-				content = content.replaceAll(`\${${replacementKey}}`, replaceValue);
+				if (typeof content === "string") {
+					content = content.replaceAll(`\${${replacementKey}}`, replaceValue);
+				}
 			}
 		}
 		return content;
