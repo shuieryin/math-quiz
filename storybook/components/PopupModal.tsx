@@ -29,7 +29,7 @@ const PopupModal: FunctionComponent<Props> = ({ initTrigger, initContent }) => {
 				? createPortal(
 						<div className="bg-dim fixed left-0 top-0 right-0 z-50 h-screen justify-center items-center flex">
 							<div className="relative w-full max-w-md max-h-full">
-								<div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+								<div className="relative rounded-lg shadow bg-gray-950 border-1">
 									{content}
 								</div>
 							</div>
