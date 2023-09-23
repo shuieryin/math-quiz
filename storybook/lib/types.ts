@@ -1,6 +1,7 @@
 import { genDefaultQuestion } from "../equation/equationUtils";
 import { IncorrectQuestionV9, QuizReportV9 } from "./MigrateDbStoreUtils";
 import { QuizId } from "./QuestionGenerator";
+import { MAX_END_NUMBER } from "./utils";
 
 export type DivisionRemQuestion = { dividend: number; divisor: number };
 export type DivisionRemAnswer = { quotient?: number; remainder?: number };
@@ -74,15 +75,15 @@ export type NumberRange =
 	| { start?: number; end: number };
 
 export class Equation {
-	maxNum: number;
-	digitSize: number;
+	numberRanges: NumberRange[];
 	maxQuestionSize: number;
 	genQuestion: (quizId: QuizId) => EquationResult;
 	genQuestionWithState = genDefaultQuestion;
 
-	constructor(maxNum: number, digitSize = 2) {
-		this.maxNum = maxNum;
-		this.digitSize = digitSize;
+	constructor(numberRanges: NumberRange[]) {
+		this.numberRanges = numberRanges;
+		const maxNum = numberRanges[0].end ?? MAX_END_NUMBER;
+		const digitSize = numberRanges.length;
 		if (digitSize === 2 && maxNum <= 20) {
 			this.maxQuestionSize = 80;
 		} else if (digitSize === 3 && maxNum <= 100) {

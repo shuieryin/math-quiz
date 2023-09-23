@@ -1,6 +1,6 @@
 export type Lang = "zh" | "en";
 
-export type NlsGradeKey = "grade-one" | "grade-two";
+export type NlsGradeKey = "grade-one" | "grade-two" | "grade-three";
 export type NlsWithinKey =
 	| "within-100"
 	| "within-20"
@@ -18,7 +18,8 @@ export type NlsDigitKey =
 	| "one-number"
 	| "two-numbers"
 	| "three-numbers"
-	| "four-numbers";
+	| "four-numbers"
+	| "three-numbers-with-one-number";
 export type NlsKey =
 	| "yes"
 	| "no"

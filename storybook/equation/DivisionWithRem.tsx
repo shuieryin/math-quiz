@@ -7,25 +7,15 @@ import {
 import { genDefaultQuestion, genDivRemSequence } from "./equationUtils";
 import React from "react";
 import DivisionWithRemQuestionCard from "../components/DivisionWithRemQuestionCard";
-import { sizeOfNumber } from "../lib/utils";
 import { QuizId } from "../lib/QuestionGenerator";
 
-const { v4: uuidv4 } = require("uuid");
+import { v4 as uuidv4 } from "uuid";
 
 class DivisionWithRem extends Equation {
-	minNum = 1;
-
 	genQuestion = (quizId: QuizId): EquationResult => {
-		const divisorEnd = Math.max(
-			1,
-			Math.pow(10, sizeOfNumber(this.maxNum) - 1) - 1
-		);
 		const { quotient, remainder, dividend, divisor } = genDivRemSequence({
-			dividendRange: { start: this.minNum, end: this.maxNum },
-			divisorRange: {
-				start: this.minNum,
-				end: divisorEnd
-			}
+			dividendRange: this.numberRanges[0],
+			divisorRange: this.numberRanges[1]
 		});
 
 		return this.genQuestionWithState({

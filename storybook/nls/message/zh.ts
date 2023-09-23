@@ -17,6 +17,7 @@ const zh: LangPack = {
 	"quiz-history": "历史成绩",
 	"grade-one": "一年级",
 	"grade-two": "二年级",
+	"grade-three": "三年级",
 	"within-100": "100内",
 	"within-20": "20内",
 	"within-10": "10内",
@@ -32,6 +33,7 @@ const zh: LangPack = {
 	"two-numbers": "二个数字",
 	"three-numbers": "三个数字",
 	"four-numbers": "四个数字",
+	"three-numbers-with-one-number": "三个数字 x 一个数字",
 	"math-quiz": "数学练习",
 	"short-months": [
 		"1月",

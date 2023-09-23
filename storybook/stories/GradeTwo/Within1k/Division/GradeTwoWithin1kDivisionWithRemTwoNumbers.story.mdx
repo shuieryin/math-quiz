@@ -6,7 +6,7 @@ import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import DivisionWithRem from "../../../../equation/DivisionWithRem";
 const questionGenerator = new QuestionGenerator({
 	id: "grade-two_within-1k_division-rem_two-numbers",
-	maxNum: 999,
+    numberRanges: [{ start: 100, end: 1000 }, { start: 1, end: 100 }],
 	EquationClass: DivisionWithRem
 });
 
