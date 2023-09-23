@@ -1,15 +1,14 @@
-import { Equation, EquationResult } from "../lib/types";
+import { Equation, EquationResult, NumberRange } from "../lib/types";
 import { genAddSubVariants } from "./equationUtils";
 import { QuizId } from "../lib/QuestionGenerator";
 
 class Subtraction extends Equation {
-	minNum = 2;
 	step = 2;
 
-	constructor(maxNum: number, digitSize: number) {
-		super(maxNum, digitSize);
+	constructor(numberRanges: NumberRange[]) {
+		super(numberRanges);
 
-		if (digitSize === 2) {
+		if (numberRanges.length === 2) {
 			this.maxQuestionSize = 200;
 		} else {
 			this.maxQuestionSize = 500;
@@ -20,7 +19,7 @@ class Subtraction extends Equation {
 		const {
 			digits: [answer],
 			questionContent
-		} = genAddSubVariants(this.digitSize, this.minNum, this.maxNum, this.step);
+		} = genAddSubVariants(this.numberRanges, this.step);
 
 		return this.genQuestionWithState({
 			quizId,

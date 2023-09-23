@@ -5,6 +5,9 @@ import { CheckCircle, Exclamation, XCircle } from "../components/Icons";
 import Tooltip from "../components/Tooltip";
 import React from "react";
 
+export const MIN_START_NUMBER = 1;
+export const MAX_END_NUMBER = 10000;
+
 export const defaultDocParams = () => ({
 	viewMode: "docs",
 	previewTabs: {

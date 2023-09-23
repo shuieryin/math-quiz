@@ -6,8 +6,7 @@ import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import Subtraction from "../../../../equation/Subtraction";
 const questionGenerator = new QuestionGenerator({
 	id: "grade-one_within-100_subtraction_two-numbers",
-	maxNum: 100,
-	digitSize: 2,
+    numberRanges: [{ end: 100 }, { end: 100 }],
 	EquationClass: Subtraction
 });
 

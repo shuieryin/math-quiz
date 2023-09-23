@@ -1,5 +1,10 @@
 import React from "react";
-import { randBool, randInt } from "../lib/utils";
+import {
+	MAX_END_NUMBER,
+	MIN_START_NUMBER,
+	randBool,
+	randInt
+} from "../lib/utils";
 import {
 	DivisionRemAnswer,
 	DivisionRemQuestion,
@@ -10,17 +15,19 @@ import {
 import QuestionCard from "../components/QuestionCard";
 
 export const genAddSubSequence = (
-	digitSize: number,
-	minNum: number,
-	maxNum: number,
+	numberRanges: NumberRange[],
 	step: number
 ): number[] => {
-	let lastDigit = maxNum;
+	let lastDigit: number;
 	const digits = [];
-	for (let i = 0; i < digitSize; i++) {
-		const startInt = i === 0 ? minNum + digitSize : minNum;
+	for (let i = 0; i < numberRanges.length; i++) {
+		const { start = MIN_START_NUMBER, end = MAX_END_NUMBER } = numberRanges[i];
+		if (lastDigit == undefined) {
+			lastDigit = end;
+		}
+
 		const endInt = lastDigit - step;
-		const curDigit = randInt(startInt, endInt);
+		const curDigit = randInt(start, endInt);
 
 		digits.push(curDigit);
 		if (i === 0) {
@@ -34,18 +41,21 @@ export const genAddSubSequence = (
 };
 
 export const genAddSubVariants = (
-	digitSize: number,
-	minNum: number,
-	maxNum: number,
+	numberRanges: NumberRange[],
 	step: number
 ): { digits: number[]; questionContent: string } => {
 	let questionContent = "";
 	let answer = NaN;
-	let lastMax = maxNum;
+	let lastMax: number;
 	let operator = 1;
 	const digits = [];
-	for (let i = 0; i < digitSize; i++) {
-		const curDigit = randInt(minNum, lastMax);
+	for (let i = 0; i < numberRanges.length; i++) {
+		const { start = MIN_START_NUMBER, end = MAX_END_NUMBER } = numberRanges[i];
+		if (lastMax == undefined) {
+			lastMax = end;
+		}
+
+		const curDigit = randInt(start, lastMax);
 		const curDigitWithOp = curDigit * operator;
 		digits.push(curDigit * operator);
 
@@ -57,16 +67,16 @@ export const genAddSubVariants = (
 			questionContent += ` ${operator > 0 ? "+" : "-"} ${curDigit}`;
 		}
 
-		if (curDigit <= minNum + step) {
+		if (curDigit <= start + step) {
 			operator = 1;
-		} else if (curDigit >= maxNum - step) {
+		} else if (curDigit >= end - step) {
 			operator = -1;
 		} else {
 			operator = randBool() ? 1 : -1;
 		}
 
 		if (operator > 0) {
-			lastMax = maxNum - answer - step;
+			lastMax = end - answer - step;
 		} else {
 			lastMax = answer - step;
 		}
@@ -75,15 +85,14 @@ export const genAddSubVariants = (
 	return { digits, questionContent };
 };
 
-export const genMulDivSequence = (
-	digitSize: number,
-	minNum: number,
-	maxNum: number
-): number[] => {
+export const genMulDivSequence = (numberRanges: NumberRange[]): number[] => {
 	let answer = 1;
 	const digits = [];
-	for (let i = 0; i < digitSize; i++) {
-		const curDigit = randInt(minNum, maxNum);
+	for (const {
+		start = MIN_START_NUMBER,
+		end = MAX_END_NUMBER
+	} of numberRanges) {
+		const curDigit = randInt(start, end);
 		answer *= curDigit;
 		digits.push(curDigit);
 	}

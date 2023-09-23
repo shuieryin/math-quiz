@@ -82,7 +82,11 @@ export default (questionGenerator: QuestionGenerator) => {
 
 				// decrease incorrect question penalty count
 				if (existingIncorrectQuestion) {
-					existingIncorrectQuestion.count--;
+					if (existingIncorrectQuestion.count > 3) {
+						existingIncorrectQuestion.count = 2;
+					} else {
+						existingIncorrectQuestion.count--;
+					}
 					if (existingIncorrectQuestion.count <= 0) {
 						await removeRecord(
 							"incorrectQuestion",
@@ -100,12 +104,7 @@ export default (questionGenerator: QuestionGenerator) => {
 					answer
 				};
 
-				if (existingIncorrectQuestion) {
-					const { count = 0 } = existingIncorrectQuestion;
-					incorrectQuestion.count = incorrectQuestionPenalty + count;
-				} else {
-					incorrectQuestion.count = incorrectQuestionPenalty;
-				}
+				incorrectQuestion.count = incorrectQuestionPenalty;
 				await addRecord("incorrectQuestion", incorrectQuestion);
 			}
 			question.correct = correct;

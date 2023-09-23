@@ -1,4 +1,10 @@
-import { DoGenParams, Equation, Question, Questions } from "./types";
+import {
+	DoGenParams,
+	Equation,
+	NumberRange,
+	Question,
+	Questions
+} from "./types";
 import { shuffle } from "./utils";
 import nls from "../nls";
 import {
@@ -10,8 +16,8 @@ import {
 } from "../nls/types";
 
 const defaultQuestionSizes = [
-	3, 5, 10, 20, 30, 50, 60, 80, 100, 120, 150, 200, 500, 750, 1000, 1500, 2000,
-	3000
+	1, 2, 3, 5, 10, 20, 30, 50, 60, 80, 100, 120, 150, 200, 500, 750, 1000, 1500,
+	2000, 3000
 ];
 
 export type QuizId =
@@ -23,17 +29,15 @@ class QuestionGenerator {
 
 	constructor({
 		id,
-		maxNum,
-		digitSize,
+		numberRanges,
 		EquationClass
 	}: {
 		id: QuizId;
-		maxNum: number;
-		digitSize?: number;
+		numberRanges: NumberRange[];
 		EquationClass: typeof Equation;
 	}) {
 		this.id = id;
-		this.equation = new EquationClass(maxNum, digitSize);
+		this.equation = new EquationClass(numberRanges);
 	}
 
 	questionSizes = () =>
@@ -80,7 +84,7 @@ class QuestionGenerator {
 			shuffle(questions);
 		}
 
-		let lastQuestion;
+		let lastQuestion: Question;
 		for (const question of questions) {
 			if (lastQuestion) {
 				question.prev = lastQuestion;

@@ -6,8 +6,7 @@ import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import Division from "../../../../equation/Division";
 const questionGenerator = new QuestionGenerator({
 	id: "grade-two_within-10k_division_two-numbers",
-	maxNum: 99,
-	digitSize: 2,
+    numberRanges: [{ end: 100 }, { end: 100 }],
 	EquationClass: Division
 });
 

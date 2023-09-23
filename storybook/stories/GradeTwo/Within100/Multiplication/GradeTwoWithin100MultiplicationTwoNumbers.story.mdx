@@ -6,8 +6,7 @@ import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import Multiplication from "../../../../equation/Multiplication";
 const questionGenerator = new QuestionGenerator({
 	id: "grade-two_within-100_multiplication_two-numbers",
-	maxNum: 99,
-	digitSize: 2,
+    numberRanges: [{ end: 100 }, { end: 100 }],
 	EquationClass: Multiplication
 });
 

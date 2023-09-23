@@ -6,8 +6,7 @@ import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import AddSub from "../../../../equation/AddSub";
 const questionGenerator = new QuestionGenerator({
 	id: "grade-one_within-20_addition-and-subtraction_two-numbers",
-	maxNum: 20,
-	digitSize: 2,
+    numberRanges: [{ end: 20 }, { end: 20 }],
 	EquationClass: AddSub
 });
 

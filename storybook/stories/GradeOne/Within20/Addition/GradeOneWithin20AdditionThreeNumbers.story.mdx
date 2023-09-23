@@ -6,8 +6,7 @@ import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import Addition from "../../../../equation/Addition";
 const questionGenerator = new QuestionGenerator({
 	id: "grade-one_within-20_addition_three-numbers",
-	maxNum: 20,
-	digitSize: 3,
+    numberRanges: [{ end: 20 }, { end: 20 }, { end: 20 }],
 	EquationClass: Addition
 });
 

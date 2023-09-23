@@ -17,6 +17,7 @@ const en: LangPack = {
 	"quiz-history": "History",
 	"grade-one": "Grade 1",
 	"grade-two": "Grade 2",
+	"grade-three": "Grade 3",
 	"within-100": "Within 100",
 	"within-10": "Within 10",
 	"within-20": "Within 20",
@@ -32,6 +33,7 @@ const en: LangPack = {
 	"two-numbers": "Two numbers",
 	"three-numbers": "Three numbers",
 	"four-numbers": "Four numbers",
+	"three-numbers-with-one-number": "Three numbers with one number",
 	"math-quiz": "Math quiz",
 	"short-months": [
 		"Jan",
