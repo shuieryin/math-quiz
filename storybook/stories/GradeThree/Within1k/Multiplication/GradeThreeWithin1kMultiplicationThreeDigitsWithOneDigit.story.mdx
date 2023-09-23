@@ -6,7 +6,7 @@ import QuestionGenerator from "../../../../lib/QuestionGenerator";
 import Multiplication from "../../../../equation/Multiplication";
 const questionGenerator = new QuestionGenerator({
 	id: "grade-three_within-1k_multiplication_three-numbers-with-one-number",
-    numberRanges: [{ end: 1000 }, { end: 10 }],
+    numberRanges: [{ end: 1000 }, { start: 2, end: 10 }],
 	EquationClass: Multiplication
 });
 
