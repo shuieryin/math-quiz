@@ -73,7 +73,7 @@ export const quizReportColor = (quizReport: QuizReport) => {
 };
 
 export const accuracyRateColor = (accuracyRate: number) => {
-	let bgColor;
+	let bgColor: string;
 	if (accuracyRate < 40) {
 		bgColor = "bg-red-900";
 	} else if (accuracyRate >= 40 && accuracyRate < 60) {
@@ -122,7 +122,7 @@ export const isMobile = (() => {
 			)
 		)
 			check = true;
-	})(navigator.userAgent || navigator.vendor || window["opera"]);
+	})(navigator.userAgent || window["opera"]); // || navigator.vendor
 	return check;
 })();
 
@@ -139,14 +139,14 @@ export const isMobileWithTablet = (() => {
 			)
 		)
 			check = true;
-	})(navigator.userAgent || navigator.vendor || window["opera"]);
+	})(navigator.userAgent || window["opera"]); // || navigator.vendor
 	return check;
 })();
 
-export const questionCardTopLeft = ({
+export const questionCardTopLeft = <QuestionType, AnswerType>({
 	correct,
 	isReuse
-}: Question): {
+}: Question<QuestionType, AnswerType>): {
 	inputBoxBgColor: string;
 	topLeftIcon: JSX.Element;
 	correctColor?: string;
@@ -154,7 +154,7 @@ export const questionCardTopLeft = ({
 } => {
 	const correctColor = "bg-green-700";
 	const incorrectColor = "bg-red-400";
-	let inputBoxBgColor, topLeftIcon;
+	let inputBoxBgColor: string, topLeftIcon: JSX.Element;
 	if (correct === true) {
 		inputBoxBgColor = correctColor;
 		topLeftIcon = (
@@ -192,7 +192,7 @@ export const questionCardTopLeft = ({
 export const unmarshalQuestionContent = (
 	questionContent: QuestionContent
 ): string => {
-	let content;
+	let content: string;
 	if (questionContent instanceof Object) {
 		content = JSON.stringify(questionContent);
 	} else {
@@ -211,5 +211,6 @@ export const marshalQuestionContent = (content: string): QuestionContent => {
 	return questionContent;
 };
 
+// noinspection JSUnusedGlobalSymbols
 export const sizeOfNumber = (num: number): number =>
 	(Math.log(num) * Math.LOG10E + 1) | 0;

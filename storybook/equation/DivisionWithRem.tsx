@@ -1,5 +1,6 @@
 import {
 	DivisionRemAnswer,
+	DivisionRemQuestion,
 	DoGenParams,
 	Equation,
 	EquationResult
@@ -11,8 +12,10 @@ import { QuizId } from "../lib/QuestionGenerator";
 
 import { v4 as uuidv4 } from "uuid";
 
-class DivisionWithRem extends Equation {
-	genQuestion = (quizId: QuizId): EquationResult => {
+class DivisionWithRem extends Equation<DivisionRemQuestion, DivisionRemAnswer> {
+	genQuestion = (
+		quizId: QuizId
+	): EquationResult<DivisionRemQuestion, DivisionRemAnswer> => {
 		const { quotient, remainder, dividend, divisor } = genDivRemSequence({
 			dividendRange: this.numberRanges[0],
 			divisorRange: this.numberRanges[1]
@@ -25,7 +28,9 @@ class DivisionWithRem extends Equation {
 		});
 	};
 
-	genQuestionWithState = (params: DoGenParams): EquationResult => {
+	genQuestionWithState = (
+		params: DoGenParams<DivisionRemQuestion, DivisionRemAnswer>
+	): EquationResult<DivisionRemQuestion, DivisionRemAnswer> => {
 		const question = genDefaultQuestion(params);
 
 		question.genQuestionCard = submitted => (
@@ -38,8 +43,8 @@ class DivisionWithRem extends Equation {
 		question.handleSubmit = ({
 			quotient: inputQuotient,
 			remainder: inputRemainder
-		}: DivisionRemAnswer = {}) => {
-			const { quotient, remainder } = question.answer as DivisionRemAnswer;
+		} = {}) => {
+			const { quotient, remainder } = question.answer;
 			return inputQuotient === quotient && inputRemainder === remainder;
 		};
 		return question;

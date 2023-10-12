@@ -156,7 +156,7 @@ export const removeRecord = (storeName: StoreName, key: string) => {
 
 export const getRecord = <Record extends StoreRecord>(
 	storeName: StoreName,
-	key
+	key: string
 ): Promise<Record> => {
 	const request = requestDb();
 	return new Promise<Record>(resolve => {

@@ -2,7 +2,7 @@ import { Equation, EquationResult, NumberRange } from "../lib/types";
 import { genAddSubVariants } from "./equationUtils";
 import { QuizId } from "../lib/QuestionGenerator";
 
-class Subtraction extends Equation {
+class Subtraction extends Equation<string, number> {
 	step = 2;
 
 	constructor(numberRanges: NumberRange[]) {
@@ -15,7 +15,7 @@ class Subtraction extends Equation {
 		}
 	}
 
-	genQuestion = (quizId: QuizId): EquationResult => {
+	genQuestion = (quizId: QuizId): EquationResult<string, number> => {
 		const {
 			digits: [answer],
 			questionContent

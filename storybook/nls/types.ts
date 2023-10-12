@@ -13,7 +13,10 @@ export type NlsMethodKey =
 	| "division"
 	| "division-rem"
 	| "subtraction"
-	| "addition-and-subtraction";
+	| "addition-and-subtraction"
+	| "fraction-addition"
+	| "fraction-subtraction"
+	| "fraction-addition-and-subtraction";
 export type NlsDigitKey =
 	| "one-number"
 	| "two-numbers"

@@ -5,7 +5,7 @@ import nls from "./nls";
 
 const themeConfig: ThemeVars = {
 	base: "dark",
-	brandTitle: nls.get("math-quiz")
+	brandTitle: nls.get("math-quiz") as string
 };
 
 const darkTheme = create(themeConfig);
@@ -56,6 +56,19 @@ export const parameters = {
 				nls.get("grade-two"),
 				[
 					nls.get("within-10"),
+					equationOrder,
+					nls.get("within-100"),
+					equationOrder,
+					nls.get("within-1k"),
+					equationOrder,
+					nls.get("within-10k"),
+					equationOrder
+				],
+				nls.get("grade-three"),
+				[
+					nls.get("within-10"),
+					equationOrder,
+					nls.get("within-20"),
 					equationOrder,
 					nls.get("within-100"),
 					equationOrder,

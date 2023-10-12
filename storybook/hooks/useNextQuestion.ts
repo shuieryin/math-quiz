@@ -1,8 +1,8 @@
 import { MutableRefObject, useEffect } from "react";
 import { Question } from "../lib/types";
 
-export default (
-	question: Question,
+export default <QuestionType, AnswerType>(
+	question: Question<QuestionType, AnswerType>,
 	inputRef: MutableRefObject<HTMLInputElement>,
 	onGotoNext = () => {}
 ) => {

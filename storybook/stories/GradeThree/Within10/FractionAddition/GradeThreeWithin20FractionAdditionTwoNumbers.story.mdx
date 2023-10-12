@@ -1,0 +1,20 @@
+import { Canvas, Meta, Title } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../../lib/utils";
+
+import QuizContainer from "../../../../components/QuizContainer";
+import QuestionGenerator from "../../../../lib/QuestionGenerator";
+import FractionAddition from "../../../../equation/FractionAddition";
+const questionGenerator = new QuestionGenerator({
+	id: "grade-three_within-10_fraction-addition_two-numbers",
+    numberRanges: [{ end: 5 }, { start: 2, end: 9 }, { end: 5 }, { start: 2, end: 9 }],
+	EquationClass: FractionAddition,
+	options: { isNumeratorLessThanDenominator: true, nonHcfChance: 0.2 }
+});
+
+<Meta title={questionGenerator.getName()} parameters={defaultDocParams()} />
+
+<Title>{questionGenerator.getTitle()}</Title>
+
+<Canvas className="custom-docs-story">
+	<QuizContainer questionGenerator={questionGenerator} />
+</Canvas>

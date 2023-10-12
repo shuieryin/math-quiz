@@ -30,7 +30,7 @@ const Tooltip: FunctionComponent<Props> = ({
 	const buttonRef = useRef<HTMLButtonElement>();
 	const containerRef = useRef<HTMLDivElement>();
 	const [isOpen, setIsOpen] = useState<boolean>(open);
-	let triggerEvents;
+	let triggerEvents: { [key: string]: VoidFunction };
 
 	switch (mode) {
 		case "click": {

@@ -8,8 +8,12 @@ import {
 import {
 	DivisionRemAnswer,
 	DivisionRemQuestion,
+	Divisors,
 	DoGenParams,
 	EquationResult,
+	Fraction,
+	GenFractionItem,
+	GenFractionOptions,
 	NumberRange
 } from "../lib/types";
 import QuestionCard from "../components/QuestionCard";
@@ -128,8 +132,7 @@ export const genDivRemSequence = ({
 	}
 
 	const dividend = randInt(dividendStart, dividendEnd);
-	let divisor = randInt(divisorStart, divisorEnd);
-	if (divisor === 0) divisor = 1;
+	const divisor = randInt(divisorStart, divisorEnd);
 
 	const quotient = Math.trunc(dividend / divisor);
 	const remainder = dividend % divisor;
@@ -141,17 +144,20 @@ export const genDivRemSequence = ({
 	};
 };
 
-export const genDefaultQuestion = ({
+export const genDefaultQuestion = <QuestionType, AnswerType>({
 	questionContent,
 	answer,
 	isReuse,
 	quizId
-}: DoGenParams): EquationResult => {
+}: DoGenParams<QuestionType, AnswerType>): EquationResult<
+	QuestionType,
+	AnswerType
+> => {
 	return {
 		quizId,
 		questionContent,
 		answer,
-		handleSubmit: (inputAnswer: number) => {
+		handleSubmit: (inputAnswer: AnswerType) => {
 			return inputAnswer === answer;
 		},
 		isReuse,
@@ -165,4 +171,145 @@ export const genDefaultQuestion = ({
 			);
 		}
 	};
+};
+
+const findDivisors = (num: number): Divisors => {
+	const results: Divisors = {};
+	for (let i = num; i > 1; i--) {
+		if (num % i === 0) {
+			results[i] = true;
+		}
+	}
+	return results;
+};
+
+const findCommonDivisors = (
+	aDivisors: Divisors,
+	bDivisors: Divisors
+): number[] => {
+	const result: number[] = [];
+	for (const key in aDivisors) {
+		const curDivisor = key as unknown as number;
+		if (bDivisors[curDivisor]) {
+			result.push(curDivisor);
+		}
+	}
+	result.sort((a, b) => b - a);
+	return result;
+};
+
+export const genFraction = (
+	{
+		numeratorRange: {
+			start: numeratorStart = 1,
+			end: numeratorEnd = Number.MAX_SAFE_INTEGER
+		},
+		denominatorRange: {
+			start: denominatorStart = 1,
+			end: denominatorEnd = Number.MAX_SAFE_INTEGER
+		}
+	}: GenFractionItem,
+	{ isNumeratorLessThanDenominator }: GenFractionOptions = {}
+): Fraction => {
+	if (numeratorStart > numeratorEnd) {
+		throw new Error(
+			`Numerator end must be greater than start, start: [${numeratorStart}], end: [${numeratorEnd}]`
+		);
+	} else if (denominatorStart > denominatorEnd) {
+		throw new Error(
+			`Denominator end must be greater than start, start: [${denominatorStart}], end: [${denominatorEnd}]`
+		);
+	} else if (denominatorStart === 0 || denominatorEnd === 0) {
+		throw new Error(
+			`Denominator cannot be zero, start: [${denominatorStart}], end: [${denominatorEnd}]`
+		);
+	}
+
+	const denominator = randInt(denominatorStart, denominatorEnd);
+	const denominatorDivisors = findDivisors(denominator);
+	let hasCommonDivisor = false;
+	let numerator: number;
+	if (isNumeratorLessThanDenominator) {
+		numeratorEnd = denominator - 1;
+	}
+	let genNumeratorCount = 0;
+	do {
+		numerator = randInt(numeratorStart, numeratorEnd);
+		const numeratorDivisors = findDivisors(numerator);
+		if (numerator < denominator) {
+			hasCommonDivisor =
+				findCommonDivisors(denominatorDivisors, numeratorDivisors).length > 0;
+		} else {
+			hasCommonDivisor =
+				findCommonDivisors(numeratorDivisors, denominatorDivisors).length > 0;
+		}
+		genNumeratorCount++;
+	} while (hasCommonDivisor && genNumeratorCount < 10);
+
+	return { numerator, denominator };
+};
+
+export const reduceFraction = ({
+	numerator,
+	denominator
+}: Fraction): Fraction => {
+	const numeratorDivisors = findDivisors(numerator);
+	const denominatorDivisors = findDivisors(denominator);
+	let commonDivisors: number[];
+	if (numerator < denominator) {
+		commonDivisors = findCommonDivisors(denominatorDivisors, numeratorDivisors);
+	} else {
+		commonDivisors = findCommonDivisors(numeratorDivisors, denominatorDivisors);
+	}
+	let nextNumerator = numerator;
+	let nextDenominator = denominator;
+	let hcf = 1;
+	if (commonDivisors.length) {
+		hcf = Number(commonDivisors[0]);
+		nextNumerator /= hcf;
+		nextDenominator /= hcf;
+	}
+
+	return { numerator: nextNumerator, denominator: nextDenominator, hcf };
+};
+
+export const genFractionAddition = (
+	items: GenFractionItem[],
+	options: GenFractionOptions = {}
+): Fraction[] => {
+	const { nonHcfChance } = options;
+	const isAllowNonHcf = nonHcfChance > Math.random();
+	let fractions: Fraction[];
+	let answer: Fraction;
+	do {
+		answer = { numerator: 0, denominator: 0 };
+		fractions = [];
+		for (const item of items) {
+			const curFraction = genFraction(item, options);
+			fractions.push(curFraction);
+			const { numerator: curNumerator, denominator: curDenominator } =
+				curFraction;
+
+			let hcf = 1;
+			if (answer.denominator) {
+				if (answer.denominator !== curDenominator) {
+					hcf *= answer.denominator;
+					answer.denominator *= curDenominator;
+					answer.numerator *= curDenominator;
+				}
+			} else {
+				answer.denominator = curDenominator;
+			}
+
+			if (answer.numerator) {
+				answer.numerator += curNumerator * hcf;
+			} else {
+				answer.numerator = curNumerator;
+			}
+		}
+		answer = reduceFraction(answer);
+	} while (!isAllowNonHcf && answer.hcf === 1);
+	fractions.unshift(answer);
+
+	return fractions;
 };
