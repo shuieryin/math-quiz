@@ -1,8 +1,11 @@
 import {
+	Answer,
 	DoGenParams,
 	Equation,
+	EquationOptions,
 	NumberRange,
 	Question,
+	QuestionContent,
 	Questions
 } from "./types";
 import { shuffle } from "./utils";
@@ -23,21 +26,23 @@ const defaultQuestionSizes = [
 export type QuizId =
 	`${NlsGradeKey}_${NlsWithinKey}_${NlsMethodKey}_${NlsDigitKey}`;
 
-class QuestionGenerator {
+class QuestionGenerator<QuestionType = QuestionContent, AnswerType = Answer> {
 	private readonly id: QuizId;
-	equation: Equation;
+	equation: Equation<QuestionType, AnswerType>;
 
 	constructor({
 		id,
 		numberRanges,
-		EquationClass
+		EquationClass,
+		options
 	}: {
 		id: QuizId;
 		numberRanges: NumberRange[];
-		EquationClass: typeof Equation;
+		EquationClass: typeof Equation<QuestionType, AnswerType>;
+		options?: EquationOptions;
 	}) {
 		this.id = id;
-		this.equation = new EquationClass(numberRanges);
+		this.equation = new EquationClass(numberRanges, options);
 	}
 
 	questionSizes = () =>
@@ -45,19 +50,19 @@ class QuestionGenerator {
 
 	genQuestions = (
 		questionSize: number,
-		incorrectQuestions: Questions = []
-	): Questions => {
+		incorrectQuestions: Questions<QuestionType, AnswerType> = []
+	): Questions<QuestionType, AnswerType> => {
 		const usedQuestions = new Set();
 		const needShuffle = incorrectQuestions.length > 1;
 
-		const questions: Questions = [];
+		const questions: Questions<QuestionType, AnswerType> = [];
 		const maxUsedCount = questionSize * 3;
 		for (
 			let i = 0;
 			i < Math.min(questionSize, this.equation.maxQuestionSize);
 			i++
 		) {
-			let question: Question;
+			let question: Question<QuestionType, AnswerType>;
 			let usedCount = 0;
 
 			if (incorrectQuestions.length > 0) {
@@ -84,7 +89,7 @@ class QuestionGenerator {
 			shuffle(questions);
 		}
 
-		let lastQuestion: Question;
+		let lastQuestion: Question<QuestionType, AnswerType>;
 		for (const question of questions) {
 			if (lastQuestion) {
 				question.prev = lastQuestion;
@@ -111,7 +116,7 @@ class QuestionGenerator {
 		return this.getName().replaceAll("/", " - ");
 	}
 
-	genQuestion(params: DoGenParams) {
+	genQuestion(params: DoGenParams<QuestionType, AnswerType>) {
 		return this.equation.genQuestionWithState(params);
 	}
 }

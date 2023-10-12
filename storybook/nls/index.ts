@@ -29,7 +29,7 @@ class Nls {
 		if (content && replacements instanceof Object) {
 			for (const replacementKey in replacements) {
 				const replacement = replacements[replacementKey];
-				let replaceValue;
+				let replaceValue: string;
 				if (replacement instanceof Function) {
 					replaceValue = replacement(this.lang);
 				} else {
@@ -43,6 +43,7 @@ class Nls {
 		return content;
 	};
 
+	// noinspection JSUnusedGlobalSymbols
 	switchLang = (targetLang: Lang) => {
 		if (this.lang !== targetLang && this.nlsLangPacks[targetLang]) {
 			this.lang = targetLang;

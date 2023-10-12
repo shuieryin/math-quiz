@@ -5,36 +5,51 @@ import { MAX_END_NUMBER } from "./utils";
 
 export type DivisionRemQuestion = { dividend: number; divisor: number };
 export type DivisionRemAnswer = { quotient?: number; remainder?: number };
-export type Answer = number | DivisionRemAnswer;
+export type Answer = number | DivisionRemAnswer | Fraction;
 
-export type QuestionContent = string | DivisionRemQuestion;
-export type Question = {
+export type QuestionContent = string | DivisionRemQuestion | Fraction[];
+export type Question<QuestionType, AnswerType> = {
 	quizId?: QuizId;
-	questionContent: QuestionContent;
-	answer: Answer;
-	inputAnswer?: Answer;
+	questionContent: QuestionType;
+	answer: AnswerType;
+	inputAnswer?: AnswerType;
 	correct?: boolean;
-	prev?: Question;
-	next?: Question;
+	prev?: Question<QuestionType, AnswerType>;
+	next?: Question<QuestionType, AnswerType>;
 	focusInput?: () => void;
 	isReuse?: boolean;
-	handleSubmit: <InputPayload>(InputPayload) => boolean;
+	handleSubmit: (inputPayload: AnswerType) => boolean;
 	genQuestionCard: (submitted: boolean) => JSX.Element;
 };
-export type Questions = Question[];
+export type Questions<
+	QuestionType = QuestionContent,
+	AnswerType = Answer
+> = Question<QuestionType, AnswerType>[];
 
-export type IncorrectQuestion = Required<
-	Pick<Question, "answer" | "quizId">
-> & { count?: number; questionContent: string };
+export type IncorrectQuestion<
+	QuestionType = QuestionContent,
+	AnswerType = Answer
+> = Required<Pick<Question<QuestionType, AnswerType>, "answer" | "quizId">> & {
+	count?: number;
+	questionContent: string;
+};
 
-export type DoGenParams = Required<
-	Pick<Question, "quizId" | "questionContent" | "answer">
+export type DoGenParams<QuestionType, AnswerType> = Required<
+	Pick<
+		Question<QuestionType, AnswerType>,
+		"quizId" | "questionContent" | "answer"
+	>
 > &
-	Pick<Question, "isReuse">;
+	Pick<Question<QuestionType, AnswerType>, "isReuse">;
 
-export type EquationResult = DoGenParams &
-	Required<Pick<Question, "handleSubmit" | "genQuestionCard">> &
-	Pick<Question, "inputAnswer">;
+export type EquationResult<QuestionType, AnswerType> = DoGenParams<
+	QuestionType,
+	AnswerType
+> &
+	Required<
+		Pick<Question<QuestionType, AnswerType>, "handleSubmit" | "genQuestionCard">
+	> &
+	Pick<Question<QuestionType, AnswerType>, "inputAnswer">;
 
 export type QuizReport = {
 	quizId: QuizId;
@@ -46,9 +61,9 @@ export type QuizReport = {
 
 export type StoreName = "quizReport" | "incorrectQuestion";
 
-export type StoreRecord =
+export type StoreRecord<QuestionType = QuestionContent, AnswerType = Answer> =
 	| QuizReport
-	| IncorrectQuestion
+	| IncorrectQuestion<QuestionType, AnswerType>
 	| QuizReportV9
 	| IncorrectQuestionV9;
 
@@ -74,14 +89,16 @@ export type NumberRange =
 	| { start: number; end?: number }
 	| { start?: number; end: number };
 
-export class Equation {
+export class Equation<QuestionType, AnswerType> {
 	numberRanges: NumberRange[];
 	maxQuestionSize: number;
-	genQuestion: (quizId: QuizId) => EquationResult;
-	genQuestionWithState = genDefaultQuestion;
+	genQuestion: (quizId: QuizId) => EquationResult<QuestionType, AnswerType>;
+	genQuestionWithState = genDefaultQuestion<QuestionType, AnswerType>;
+	options: EquationOptions;
 
-	constructor(numberRanges: NumberRange[]) {
+	constructor(numberRanges: NumberRange[], options = {}) {
 		this.numberRanges = numberRanges;
+		this.options = options;
 		const maxNum = numberRanges[0].end ?? MAX_END_NUMBER;
 		const digitSize = numberRanges.length;
 		if (digitSize === 2 && maxNum <= 20) {
@@ -93,3 +110,26 @@ export class Equation {
 		}
 	}
 }
+
+export type Fraction = {
+	numerator: number;
+	denominator: number;
+	hcf?: number;
+};
+
+export type GenFractionItem = {
+	numeratorRange: NumberRange;
+	denominatorRange: NumberRange;
+};
+
+export type EquationOptions = {
+	isNumeratorLessThanDenominator?: boolean;
+	nonHcfChance?: number;
+};
+
+export type GenFractionOptions = Pick<
+	EquationOptions,
+	"isNumeratorLessThanDenominator" | "nonHcfChance"
+>;
+
+export type Divisors = { [key: number]: boolean };

@@ -16,7 +16,7 @@ type Props = {
 };
 
 const Badge: FunctionComponent<Props> = ({ color, textSize, children }) => {
-	let colorClassName, textColorClassName;
+	let colorClassName: string, textColorClassName: string;
 	switch (color) {
 		case "dark":
 			colorClassName = "bg-gray-700";

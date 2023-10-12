@@ -27,7 +27,7 @@ const QuizControl: FunctionComponent<Props> = ({
 	questions
 }: Props) => {
 	const questionSizes = questionGenerator.questionSizes();
-	const [questionSize, setQuestionSize] = useState(questionSizes[1]);
+	const [questionSize, setQuestionSize] = useState<number>(questionSizes[1]);
 	const [quizSummary, setQuizSummary] = useState<QuizSummary>();
 	const [quizReports, setQuizReports] = useState<QuizReport[]>([]);
 	const [openHistory, setOpenHistory] = useState(false);
@@ -65,7 +65,7 @@ const QuizControl: FunctionComponent<Props> = ({
 		})();
 	}, [questions]);
 
-	let quizSummaryElement, accuracyRate;
+	let quizSummaryElement: JSX.Element, accuracyRate: number;
 	if (quizSummary) {
 		const { perQuestionTookMilli, totalCorrect, totalSize } = quizSummary;
 		const {

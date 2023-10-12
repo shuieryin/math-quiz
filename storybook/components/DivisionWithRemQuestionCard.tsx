@@ -10,7 +10,7 @@ import InputWithNumpad from "./InputWithNumpad";
 import useNextQuestion from "../hooks/useNextQuestion";
 
 type Props = {
-	question: Question;
+	question: Question<DivisionRemQuestion, DivisionRemAnswer>;
 	disabled?: boolean;
 };
 
@@ -29,13 +29,13 @@ const DivisionWithRemQuestionCard: FunctionComponent<Props> = ({
 
 	const handleChange = (propName: "quotient" | "remainder", value: string) => {
 		if (!(question.inputAnswer instanceof Object)) {
-			question.inputAnswer = {} as DivisionRemAnswer;
+			question.inputAnswer = {};
 		}
 
 		if (!isNaN(value as unknown as number)) {
 			question.inputAnswer[propName] = Number(value);
 		} else {
-			delete question.inputAnswer.quotient;
+			delete question.inputAnswer[propName];
 		}
 	};
 
@@ -75,10 +75,10 @@ const DivisionWithRemQuestionCard: FunctionComponent<Props> = ({
 	const questionPartClassName =
 		"w-55 m-auto text-4xl whitespace-nowrap font-semibold";
 
-	const { dividend, divisor } = question.questionContent as DivisionRemQuestion;
+	const { dividend, divisor } = question.questionContent;
 	const { quotient: inputQuotient, remainder: inputRemainder } =
-		(question.inputAnswer as DivisionRemAnswer) || {};
-	const { quotient, remainder } = question.answer as DivisionRemAnswer;
+		question.inputAnswer || {};
+	const { quotient, remainder } = question.answer;
 	return (
 		<div className="relative p-4 pr-6 rounded-md shadow-lg bg-gray-400 w-fit">
 			{topLeftIcon}

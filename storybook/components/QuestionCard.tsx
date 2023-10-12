@@ -5,7 +5,7 @@ import InputWithNumpad from "./InputWithNumpad";
 import useNextQuestion from "../hooks/useNextQuestion";
 
 type Props = {
-	question: Question;
+	question: Question<string, number>;
 	disabled?: boolean;
 };
 
@@ -40,7 +40,7 @@ const QuestionCard: FunctionComponent<Props> = ({ question, disabled }) => {
 					{unmarshalQuestionContent(question.questionContent)} =
 				</span>
 				{disabled ? (
-					<div className={inputClassName}>{question.inputAnswer as number}</div>
+					<div className={inputClassName}>{question.inputAnswer}</div>
 				) : (
 					<InputWithNumpad
 						inputRef={inputRef}
